@@ -14,34 +14,34 @@
 }
 
 :root {
-  --bg-page: #0B0F17;
-  --bg-card: #111827;
-  --bg-subtle: #162032;
-  --bg-hover: #1E293B;
+  --bg-page: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-subtle: #F1F5F9;
+  --bg-hover: #E2E8F0;
 
-  --border-main: #1E293B;
-  --border-dark: #334155;
-  --border-subtle: #1E293B;
+  --border-main: #CBD5E1;
+  --border-dark: #0F172A;
+  --border-subtle: #E2E8F0;
 
-  --text-main: #F8FAFC;
-  --text-secondary: #94A3B8;
+  --text-main: #0F172A;
+  --text-secondary: #475569;
   --text-muted: #64748B;
 
-  --green-main: #10B981;
-  --green-bg: rgba(16, 185, 129, 0.12);
-  --green-border: rgba(16, 185, 129, 0.4);
+  --green-main: #16A34A;
+  --green-bg: #F0FDF4;
+  --green-border: #86EFAC;
 
-  --amber-main: #F59E0B;
-  --amber-bg: rgba(245, 158, 11, 0.12);
-  --amber-border: rgba(245, 158, 11, 0.4);
+  --amber-main: #D97706;
+  --amber-bg: #FFFBEB;
+  --amber-border: #FDE68A;
 
-  --red-main: #EF4444;
-  --red-bg: rgba(239, 68, 68, 0.12);
-  --red-border: rgba(239, 68, 68, 0.4);
+  --red-main: #DC2626;
+  --red-bg: #FEF2F2;
+  --red-border: #FECACA;
 
-  --blue-main: #38BDF8;
-  --blue-bg: rgba(56, 189, 248, 0.12);
-  --blue-border: rgba(56, 189, 248, 0.4);
+  --blue-main: #2563EB;
+  --blue-bg: #EFF6FF;
+  --blue-border: #BFDBFE;
 
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -53,7 +53,7 @@ body {
   font-family: var(--font-sans);
   line-height: 1.5;
   min-height: 100vh;
-  padding: 18px 24px 48px;
+  padding: 16px 20px 40px;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -71,7 +71,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
+  padding: 12px 20px;
   background: var(--bg-card);
   border: 1px solid var(--border-main);
 }
@@ -92,11 +92,11 @@ body {
   justify-content: center;
 }
 .brand-icon svg {
-  stroke: var(--blue-main);
+  stroke: #0F172A;
 }
 
 .brand-title {
-  font-size: 1.12rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: -0.02em;
@@ -106,17 +106,16 @@ body {
   font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  background: var(--blue-main);
-  color: #0B0F17;
+  letter-spacing: 0.05em;
+  background: var(--text-main);
+  color: #FFFFFF;
   padding: 2px 6px;
   margin-left: 6px;
 }
 
 .brand-subtitle {
-  font-size: 0.74rem;
-  color: var(--text-muted);
-  letter-spacing: 0.02em;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
 }
 
 .header-right {
@@ -134,15 +133,15 @@ body {
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   background: var(--bg-subtle);
   border: 1px solid var(--border-main);
-  color: var(--text-secondary);
+  color: var(--text-main);
 }
 
 .status-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   background: var(--green-main);
   display: inline-block;
 }
@@ -188,7 +187,7 @@ body {
   padding: 7px 14px;
   font-size: 0.80rem;
   font-weight: 600;
-  background: var(--bg-card);
+  background: #FFFFFF;
   color: var(--text-main);
   border: 1px solid var(--border-main);
   cursor: pointer;
@@ -204,7 +203,7 @@ body {
   padding: 4px 10px;
   font-size: 0.72rem;
   font-weight: 600;
-  background: var(--bg-card);
+  background: #FFFFFF;
   color: var(--text-secondary);
   border: 1px solid var(--border-main);
   cursor: pointer;
@@ -241,9 +240,9 @@ body {
 }
 
 .btn-start-call {
-  background: var(--blue-main);
-  color: #0B0F17;
-  border: 1px solid var(--blue-main);
+  background: var(--text-main);
+  color: #FFFFFF;
+  border: 1px solid var(--text-main);
   padding: 12px 22px;
   font-size: 0.92rem;
   font-weight: 700;
@@ -263,7 +262,7 @@ body {
 }
 
 .btn-end-call {
-  background: var(--red-bg);
+  background: #FFFFFF;
   color: var(--red-main);
   border: 1px solid var(--red-main);
   padding: 12px 16px;
@@ -272,7 +271,7 @@ body {
   cursor: pointer;
 }
 .btn-end-call:hover {
-  background: rgba(239, 68, 68, 0.2);
+  background: var(--red-bg);
 }
 
 .phone-ring-icon {
@@ -379,7 +378,7 @@ body {
 }
 
 .btn-record-voice {
-  background: var(--bg-card);
+  background: #FFFFFF;
   color: var(--text-main);
   border: 1px solid var(--border-dark);
   padding: 8px 16px;
@@ -403,7 +402,7 @@ body {
 .waveform-box {
   flex: 1;
   height: 38px;
-  background: var(--bg-page);
+  background: #FFFFFF;
   border: 1px solid var(--border-main);
   display: flex;
   align-items: center;
@@ -434,18 +433,18 @@ body {
   padding: 8px 12px;
   font-size: 0.84rem;
   border: 1px solid var(--border-main);
-  background: var(--bg-page);
+  background: #FFFFFF;
   color: var(--text-main);
   outline: none;
 }
 .clean-input:focus {
-  border-color: var(--blue-main);
+  border-color: var(--border-dark);
 }
 
 .btn-send-speech {
-  background: var(--bg-hover);
-  color: var(--text-main);
-  border: 1px solid var(--border-dark);
+  background: var(--text-main);
+  color: #FFFFFF;
+  border: 1px solid var(--text-main);
   padding: 8px 18px;
   font-size: 0.82rem;
   font-weight: 700;
@@ -453,7 +452,7 @@ body {
   white-space: nowrap;
 }
 .btn-send-speech:hover {
-  background: var(--border-dark);
+  opacity: 0.9;
 }
 
 /* 4 Multi-Level Protection Cards Grid */
@@ -599,7 +598,7 @@ body {
 }
 
 .counter-quote-mini {
-  background: var(--bg-page);
+  background: #FFFFFF;
   border: 1px solid var(--amber-main);
   padding: 8px 10px;
   display: flex;
@@ -750,12 +749,12 @@ body {
 .chat-entry {
   padding: 10px 12px;
   border: 1px solid var(--border-main);
-  background: var(--bg-card);
+  background: #FFFFFF;
 }
 
 .chat-entry.is-agent {
   background: var(--blue-bg);
-  border-color: var(--blue-border);
+  border-color: var(--blue-main);
 }
 
 .chat-entry-top {
@@ -817,7 +816,7 @@ body {
 
 .meter-track-sharp {
   height: 10px;
-  background: var(--bg-page);
+  background: #FFFFFF;
   border: 1px solid var(--border-main);
   overflow: hidden;
 }
@@ -836,8 +835,8 @@ body {
 }
 
 .breakdown-tag {
-  background: var(--bg-card);
-  border: 1px solid var(--border-main);
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
   padding: 2px 6px;
 }
 

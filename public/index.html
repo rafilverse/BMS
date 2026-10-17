@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoiceShield — Autonomous Call Screening Agent</title>
+  <meta name="description" content="Autonomous phone call safety interceptor screening incoming callers, verifying synthetic AI and voice biometrics before forwarding to the recipient.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- App Wrapper -->
+  <div class="app-container">
+
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.2" stroke-linecap="square">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">VoiceShield <span class="brand-pill">ConsentGuard</span></div>
+          <div class="brand-subtitle">Autonomous Call Safety Agent · DetectifAI Production Biometrics · Gemini AI Shield</div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Live Status Pill -->
+        <div class="status-badge" id="statusBadge">
+          <span class="status-dot"></span>
+          <span id="statusText">Line Standby</span>
+        </div>
+
+        <!-- Model Training & Calibration Button -->
+        <button id="btnOpenTraining" class="btn-clean btn-header-training" title="Open AI Model Training & Acoustic Calibration Suite">
+          <span class="lab-icon">⚡</span>
+          <span id="btnTrainingNavText">Model Training</span>
+        </button>
+
+        <!-- Fullscreen Manual Testing Mode Toggle Button -->
+        <button id="btnOpenManualLab" class="btn-clean" title="Open DetectifAI Manual Testing Lab">
+          <span class="lab-icon">🧪</span>
+          <span id="btnLabNavText">Manual Testing Mode</span>
+        </button>
+
+        <!-- Settings Button -->
+        <button id="btnOpenSettings" class="btn-clean" title="Settings & API Keys">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          Settings
+        </button>
+      </div>
+    </header>
+
+    <!-- ======================================================================= -->
+    <!-- VIEW 1: LIVE CALL GUARD (MAIN SCREEN)                                   -->
+    <!-- ======================================================================= -->
+    <div id="viewCallGuard" class="app-view">
+      
+      <!-- Autonomous Call Screening Station (Hero) -->
+      <section class="station-card">
+        
+        <!-- Call Action & Status Row -->
+        <div class="call-control-bar">
+          <div class="call-btn-wrap">
+            <button id="btnStartCall" class="btn-start-call" title="Simulate incoming call to woman: 3s ring then agent steps in first">
+              <span class="phone-ring-icon">📞</span>
+              <span id="btnStartCallText">Start Call</span>
+            </button>
+            <button id="btnEndCall" class="btn-end-call hidden" title="End / Reset Call">
+              <span>✕</span> End Call
+            </button>
+          </div>
+
+          <div class="line-status-display">
+            <div class="line-status-top">
+              <span class="meta-label">Line Status</span>
+              <span id="callStageBadge" class="badge-pill pill-neutral">STANDBY</span>
+            </div>
+            <div id="callStatusDesc" class="line-status-desc">
+              Ready. Click "Start Call" — rings for 3 seconds, then VoiceShield answers to screen the caller before the woman speaks.
+            </div>
+          </div>
+
+          <!-- Dynamic Caller Identity Pill Box -->
+          <div class="caller-ident-box">
+            <div class="caller-ident-top">
+              <span class="meta-label">Caller Recognition</span>
+              <span id="pillCallerEnrolled" class="badge-pill pill-neutral">Standby</span>
+            </div>
+            <div class="caller-ident-name">
+              <span class="caller-avatar">👤</span>
+              <span id="textCallerIdentity" class="caller-name-text">Asking caller...</span>
+            </div>
+            <div id="textCallerRoleHint" class="caller-hint-text">
+              Agent greets & asks caller for name & reason before woman speaks
+            </div>
+          </div>
+        </div>
+
+        <!-- External Caller Input Box (The User is Calling the Woman) -->
+        <div class="caller-input-station">
+          <div class="caller-input-header">
+            <span class="input-station-title">🎙️ CALLER SPEECH (You are the incoming caller to the woman)</span>
+            <span class="input-station-sub" id="callerShieldHint">The recipient (woman) is shielded and silent until call is verified safe.</span>
+          </div>
+
+          <div class="caller-input-row">
+            <!-- Audio Record Button -->
+            <button id="btnToggleMonitor" class="btn-record-voice">
+              <span class="mic-circle">🎙️</span>
+              <span id="btnMonitorText">Record Caller Speech</span>
+            </button>
+
+            <!-- Waveform visualizer -->
+            <div class="waveform-box">
+              <canvas id="waveformCanvas" width="460" height="36"></canvas>
+              <span class="sound-label" id="soundStatusText">Microphone off</span>
+            </div>
+          </div>
+
+          <!-- Quick Text Input (For immediate testing or typed caller utterances) -->
+          <div class="quick-text-row">
+            <input type="text" id="manualUtteranceInput" class="clean-input font-mono" placeholder="Type caller speech here (or speak via microphone above)..." />
+            <button id="btnSendManualUtterance" class="btn-send-speech">Send Caller Speech</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- 4 Structured Multi-Level Protection Cards (Sharp corners, 1px thin border, NO shadows) -->
+      <section class="cards-grid-four">
+        
+        <!-- Card 1: Level 1 Synthetic Voice -->
+        <div class="sharp-card" id="cardVoice">
+          <div class="card-head">
+            <span class="card-title-text">Level 1: Synthetic Voice</span>
+            <span class="badge-pill pill-neutral" id="pillVoice">Standby</span>
+          </div>
+          <div class="card-metric">
+            <span class="metric-big font-mono" id="textVoiceTitle">AI Score: --</span>
+            <span class="cutoff-tag font-mono" id="textVoiceThreshold">Cutoff: 0.58</span>
+          </div>
+          <div class="card-sub" id="textVoiceSub">Awaiting audio to evaluate neural deepfake score...</div>
+        </div>
+
+        <!-- Card 2: Level 2 Biometric Match -->
+        <div class="sharp-card" id="cardSpeaker">
+          <div class="card-head">
+            <span class="card-title-text">Level 2: Biometric Match</span>
+            <span class="badge-pill pill-neutral" id="pillSpeaker">Standby</span>
+          </div>
+          <div class="card-metric">
+            <span class="metric-big font-mono" id="textSpeakerTitle">Similarity: --</span>
+            <span class="cutoff-tag font-mono" id="textSpeakerThreshold">Cutoff: 0.45</span>
+          </div>
+          <div class="card-sub" id="textSpeakerSub">Target enrolled contact verification...</div>
+        </div>
+
+        <!-- Card 3: Level 3 Dynamic Challenge -->
+        <div class="sharp-card" id="cardFollowUp">
+          <div class="card-head">
+            <span class="card-title-text">Level 3: Dynamic Challenge</span>
+            <span class="badge-pill pill-neutral" id="pillFollowUp">Ready</span>
+          </div>
+          <div class="card-metric">
+            <span class="metric-big" id="textFollowUpTitle">Screening Active</span>
+          </div>
+          <div class="card-sub" id="textFollowUpSub">No counter-question needed yet</div>
+        </div>
+
+        <!-- Card 4: Level 4 Coercion & Dynamically Predicted Threat Pattern -->
+        <div class="sharp-card" id="cardRequest">
+          <div class="card-head">
+            <span class="card-title-text">Level 4: Threat Pattern</span>
+            <span class="badge-pill pill-neutral" id="pillRequest">Standby</span>
+          </div>
+          <div class="card-metric">
+            <span class="metric-big" id="textRequestTitle">Pattern: Standby</span>
+          </div>
+          <div class="card-sub" id="textRequestSub">Predicted dynamically based on caller speech</div>
+        </div>
+
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- DYNAMIC DECISION OUTCOME CONTAINERS (Displayed based on AI decision)  -->
+      <!-- ===================================================================== -->
+
+      <!-- Outcome boxes removed from here - now integrated directly into Composite Threat Assessment Section -->
+
+      <!-- Main Content: Clean 2-Column Split (Sharp rectangular boxes, 0 radius, 0 shadow) -->
+      <main class="content-split-grid">
+        
+        <!-- Left Column: Live Call Interception Transcript -->
+        <section class="sharp-content-card">
+          <div class="card-bar-clean">
+            <div>
+              <h2 class="section-title">Live Call Interception Transcript</h2>
+              <div class="section-caption">Agent speaks first · Verifies identity & intent · Woman speaks only when forwarded</div>
+            </div>
+            <button id="btnClearTranscript" class="btn-clean-small">Clear</button>
+          </div>
+
+          <!-- Conversation Stream -->
+          <div class="transcript-box" id="transcriptContainer">
+            <div class="empty-state-hint" id="transcriptPlaceholder">
+              <p><strong>Click "Start Call" above</strong> to initiate incoming call screening.</p>
+              <p class="text-muted-small">Phone rings for 3 seconds, then VoiceShield answers first and asks for caller identity.</p>
+            </div>
+            <div class="chat-feed hidden" id="transcriptFeed"></div>
+          </div>
+        </section>
+
+        <!-- Right Column: Composite Threat Assessment & Score -->
+        <section class="sharp-content-card">
+          <div class="card-bar-clean">
+            <div>
+              <h2 class="section-title">Composite Threat Assessment</h2>
+              <div class="section-caption">Multi-Factor Threat Fusion & Verification Analysis</div>
+            </div>
+            <span class="badge-pill pill-safe" id="copilotVerdictBadge">Standby</span>
+          </div>
+
+          <!-- Composite Score Gauge Box -->
+          <div class="gauge-card-sharp">
+            <div class="gauge-top-row">
+              <span class="gauge-label">Composite Fraud & Coercion Risk:</span>
+              <span class="gauge-score font-mono" id="compositeScoreValue">0%</span>
+            </div>
+            <div class="meter-track-sharp">
+              <div id="compositeMeterFill" class="meter-fill-sharp" style="width: 5%;"></div>
+            </div>
+            <div class="gauge-breakdown-row font-mono">
+              <span class="breakdown-tag" id="tagSyntheticRisk">Synthetic: 0/35</span>
+              <span class="breakdown-tag" id="tagBiometricRisk">Impersonation: 0/35</span>
+              <span class="breakdown-tag" id="tagCoercionRisk">Coercion: 0/35</span>
+            </div>
+          </div>
+
+          <!-- Screening Interception Action & Line Status Panel -->
+          <div id="compositeActionBox" class="composite-action-panel status-idle">
+            <div class="action-panel-top">
+              <span class="action-panel-tag font-mono">ASSISTANT ACTION</span>
+              <span id="compositeActionBadge" class="badge-pill pill-neutral">STANDBY · SHIELD ARMED</span>
+            </div>
+            <div id="compositeActionDesc" class="action-panel-desc">
+              VoiceShield screening assistant intercepts incoming callers. Recipient is protected from unverified lines.
+            </div>
+            <div id="compositeCounterQuoteBox" class="counter-quote-mini hidden">
+              <div class="counter-quote-label font-mono">ACTIVE SCREENING QUESTION:</div>
+              <div id="activeCounterQuestionText" class="counter-quote-text">"Hello, may I ask who is calling?"</div>
+              <div class="counter-quote-hint">➡️ Caller must speak or type answer to proceed</div>
+            </div>
+          </div>
+
+          <!-- Recipient Protection Guidance & Action Advisory -->
+          <div id="compositeGuidanceBox" class="composite-guidance-panel hidden">
+            <div class="guidance-panel-top">
+              <span class="guidance-panel-tag">🛡️ RECIPIENT PROTECTION ADVISORY</span>
+              <span id="guidanceRiskPill" class="badge-pill pill-danger">HIGH RISK</span>
+            </div>
+            <div class="guidance-section-block">
+              <div class="guidance-block-label">Situation Analysis:</div>
+              <div id="seriousThreatSituation" class="guidance-situation-text">Threat intercepted on line.</div>
+            </div>
+            <div class="guidance-section-block">
+              <div class="guidance-block-label">Important Instructions for Recipient:</div>
+              <div id="seriousThreatInstructions" class="guidance-instructions-text">
+                1. Do not comply with any transfer or OTP demands.<br>
+                2. Real police or authorities never arrest over video or phone calls.<br>
+                3. Call terminated. Call 1930 (Cyber Crime Helpline) if harassment continues.
+              </div>
+            </div>
+          </div>
+
+          <!-- Threat Explanation & Safety Breakdown -->
+          <div class="copilot-advice-container" id="adviceContainer">
+            <div class="advice-section-title">Safety Analysis & Telemetry:</div>
+            <div class="advice-top-explanation" id="adviceExplanation">
+              Line is idle. Click "Start Call" to begin screening incoming caller before recipient is exposed.
+            </div>
+
+            <div class="protection-checklist">
+              <div class="check-item"><span class="check-icon font-mono">[✓]</span> Voice authenticity checked on DetectifAI neural models</div>
+              <div class="check-item"><span class="check-icon font-mono">[✓]</span> Biometric voiceprint matched against enrolled contacts</div>
+              <div class="check-item"><span class="check-icon font-mono">[✓]</span> Scans dynamically for digital arrest, extortion & coercion</div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- VIEW 2: FULL SCREEN MANUAL TESTING LAB (PURE DETECTIFAI - NO POPUP)      -->
+    <!-- ======================================================================= -->
+    <div id="viewManualLab" class="app-view hidden">
+      <div class="lab-fullscreen-container">
+        
+        <!-- Lab Header Banner -->
+        <div class="lab-header-banner">
+          <div class="lab-header-left">
+            <button id="btnBackToGuard" class="btn-clean" title="Return to Live Call Guard">
+              ← Back to Call Interception
+            </button>
+            <div>
+              <h2 class="lab-main-title">🧪 DetectifAI Manual Testing Lab</h2>
+              <p class="lab-main-sub">Direct biometrics, multi-sample training & deepfake neural verification (Direct API · Zero AI agents)</p>
+            </div>
+          </div>
+          <div class="badge-pill pill-safe">DetectifAI Cloud Active</div>
+        </div>
+
+        <!-- Fullscreen Tab Navigation -->
+        <div class="lab-fullscreen-body">
+          <div class="modal-tabs-header lab-tabs-clean">
+            <button id="tabLabEnroll" class="modal-tab-btn active">🎙️ 1. Voice Enrollment & Vault</button>
+            <button id="tabLabVerify" class="modal-tab-btn">👤 2. Speaker Verification (Direct Eidos)</button>
+            <button id="tabLabDeepfake" class="modal-tab-btn">🤖 3. Deepfake Detection (Direct Aletheia)</button>
+            <button id="tabLabDiagnostics" class="modal-tab-btn">🛠️ 4. Diagnostics & Telemetry</button>
+            <button id="tabLabTraining" class="modal-tab-btn tab-highlight">⚡ 5. Model Training & Calibration</button>
+          </div>
+
+          <div class="lab-tab-content">
+            
+            <!-- PANE 1: Voice Enrollment & Training -->
+            <div id="paneLabEnroll" class="tab-pane active">
+              <p class="modal-text">
+                Enroll and train voice biometrics directly on DetectifAI. Speak for 15 seconds to create a voiceprint. You can add up to 5 samples per person to train the centroid and maximize accuracy!
+              </p>
+
+              <div class="form-grid-row">
+                <div class="form-item">
+                  <label class="form-label" for="enrollNameInput">Your Name</label>
+                  <input type="text" id="enrollNameInput" class="clean-input" placeholder="e.g. Muhammed Rafil" />
+                </div>
+                <div class="form-item">
+                  <label class="form-label" for="enrollRoleInput">Your Role / Relationship</label>
+                  <input type="text" id="enrollRoleInput" class="clean-input" placeholder="e.g. Family Contact / Myself" />
+                </div>
+              </div>
+
+              <!-- Recording Station -->
+              <div class="enroll-box">
+                <div class="enroll-prompt">
+                  <strong>📖 Read this aloud into your microphone:</strong><br>
+                  <em>"I am enrolling my voice into DetectifAI. This biometric recording registers my unique vocal chords and voiceprint for speaker verification."</em>
+                </div>
+
+                <div class="enroll-visualizer-wrap">
+                  <canvas id="enrollVisualizerCanvas" width="600" height="40"></canvas>
+                </div>
+
+                <div class="enroll-controls-row">
+                  <button id="btnStartEnrollRecord" class="btn-clean">
+                    <span id="enrollBtnIcon">🎙️</span>
+                    <span id="enrollBtnText">Start 15s Recording</span>
+                  </button>
+                  <span id="enrollTimerText" class="timer-display font-mono">15s</span>
+                </div>
+
+                <div class="progress-bar-wrap">
+                  <div id="enrollProgress" class="progress-bar-fill" style="width: 0%;"></div>
+                </div>
+                <span id="enrollStatusHint" class="form-hint">Click Start and speak clearly into your mic.</span>
+
+                <!-- Audio Preview Player -->
+                <div id="enrollAudioPreviewWrap" class="audio-preview-box hidden">
+                  <span class="preview-label">🎧 Listen to your recording:</span>
+                  <audio id="enrollAudioPreview" controls class="enroll-audio-element"></audio>
+                </div>
+              </div>
+
+              <div class="modal-actions-inline">
+                <button id="btnSubmitEnroll" class="btn-start-call" disabled>Save & Enroll into DetectifAI Cloud</button>
+              </div>
+
+              <!-- Enrolled Profiles List -->
+              <div class="enrolled-vault-section">
+                <h4 class="sub-heading-clean">Currently Enrolled Profiles on DetectifAI (<span id="cloudSpeakerCount">0</span>)</h4>
+                <div id="enrolledSpeakersList" class="enrolled-speakers-container">
+                  <div class="empty-state-hint">Loading enrolled profiles from DetectifAI...</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANE 2: Direct Speaker Verification -->
+            <div id="paneLabVerify" class="tab-pane hidden">
+              <p class="modal-text">
+                Test speaker verification with your own voice. Select an enrolled speaker profile, record a short audio sample or <strong>upload any call recording / audio file</strong>, and verify directly against the threshold!
+              </p>
+
+              <div class="lab-card-station">
+                <div class="form-item">
+                  <label class="form-label" for="labVerifySpeakerSelect">Target Enrolled Speaker to Verify Against:</label>
+                  <select id="labVerifySpeakerSelect" class="clean-select full-width font-mono">
+                    <option value="" disabled selected>Loading enrolled profiles from DetectifAI...</option>
+                  </select>
+                </div>
+
+                <div class="lab-audio-actions">
+                  <button id="btnLabRecordVerify" class="btn-clean">
+                    <span id="labRecordVerifyIcon">🎙️</span>
+                    <span id="labRecordVerifyText">Record Voice (4s)</span>
+                  </button>
+                  <span class="text-or">or</span>
+                  <button id="btnLabUploadVerify" class="btn-clean">📁 Upload Audio File (WAV/MP3)</button>
+                  <input type="file" id="labVerifyFileInput" accept="audio/*" class="hidden" />
+                </div>
+
+                <!-- Audio Preview -->
+                <div id="labVerifyAudioPreviewWrap" class="audio-preview-box hidden">
+                  <span class="preview-label">🎧 Test Audio Sample:</span>
+                  <audio id="labVerifyAudioPreview" controls class="enroll-audio-element"></audio>
+                </div>
+
+                <button id="btnExecuteDirectVerify" class="btn-start-call full-width" disabled>
+                  ⚡ Verify Voice with DetectifAI (Eidos API)
+                </button>
+
+                <!-- Verification Results Display -->
+                <div id="labVerifyResultBox" class="lab-result-box hidden">
+                  <div class="lab-result-header">
+                    <span class="lab-result-label">DetectifAI Verification Result:</span>
+                    <span id="labVerifyBadge" class="badge-pill pill-neutral">--</span>
+                  </div>
+                  <div class="lab-metrics-grid">
+                    <div class="metric-box">
+                      <span class="m-label">Cosine Similarity</span>
+                      <span class="m-value font-mono" id="labVerifySimilarity">0.0000</span>
+                    </div>
+                    <div class="metric-box">
+                      <span class="m-label">Threshold</span>
+                      <span class="m-value font-mono" id="labVerifyThreshold">0.4500</span>
+                    </div>
+                    <div class="metric-box">
+                      <span class="m-label">Margin</span>
+                      <span class="m-value font-mono" id="labVerifyMargin">0.0000</span>
+                    </div>
+                    <div class="metric-box">
+                      <span class="m-label">Latency</span>
+                      <span class="m-value font-mono" id="labVerifyLatency">-- ms</span>
+                    </div>
+                  </div>
+                  <div class="lab-result-summary" id="labVerifySummaryText">
+                    Awaiting test run...
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANE 3: Direct Deepfake Detection -->
+            <div id="paneLabDeepfake" class="tab-pane hidden">
+              <p class="modal-text">
+                Test deepfake detection directly. Record your natural voice or <strong>upload any audio clip</strong> (ElevenLabs, TTS, WhatsApp note), and see DetectifAI's neural deepfake detector (Aletheia) evaluate it!
+              </p>
+
+              <div class="lab-card-station">
+                <div class="lab-audio-actions">
+                  <button id="btnLabRecordDeepfake" class="btn-clean">
+                    <span id="labRecordDeepfakeIcon">🎙️</span>
+                    <span id="labRecordDeepfakeText">Record Voice (4s)</span>
+                  </button>
+                  <span class="text-or">or</span>
+                  <button id="btnLabUploadDeepfake" class="btn-clean">📁 Upload Audio File (WAV/MP3)</button>
+                  <input type="file" id="labDeepfakeFileInput" accept="audio/*" class="hidden" />
+                </div>
+
+                <!-- Audio Preview -->
+                <div id="labDeepfakeAudioPreviewWrap" class="audio-preview-box hidden">
+                  <span class="preview-label">🎧 Audio to Analyze:</span>
+                  <audio id="labDeepfakeAudioPreview" controls class="enroll-audio-element"></audio>
+                </div>
+
+                <button id="btnExecuteDirectDeepfake" class="btn-start-call full-width" disabled>
+                  ⚡ Scan for Deepfake with DetectifAI (Aletheia API)
+                </button>
+
+                <!-- Deepfake Results Display -->
+                <div id="labDeepfakeResultBox" class="lab-result-box hidden">
+                  <div class="lab-result-header">
+                    <span class="lab-result-label">DetectifAI Deepfake Verdict:</span>
+                    <span id="labDeepfakeBadge" class="badge-pill pill-neutral">--</span>
+                  </div>
+                  <div class="lab-metrics-grid">
+                    <div class="metric-box">
+                      <span class="m-label">AI Probability</span>
+                      <span class="m-value font-mono" id="labDeepfakeScore">0.0000</span>
+                    </div>
+                    <div class="metric-box">
+                      <span class="m-label">Cutoff Threshold</span>
+                      <span class="m-value font-mono" id="labDeepfakeThreshold">0.5800</span>
+                    </div>
+                    <div class="metric-box">
+                      <span class="m-label">Model</span>
+                      <span class="m-value font-mono">aletheia-wavlm</span>
+                    </div>
+                    <div class="metric-box">
+                      <span class="m-label">Latency</span>
+                      <span class="m-value font-mono" id="labDeepfakeLatency">-- ms</span>
+                    </div>
+                  </div>
+                  <div class="lab-result-summary" id="labDeepfakeSummaryText">
+                    Awaiting test run...
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANE 4: Diagnostics & Verbatim Telemetry -->
+            <div id="paneLabDiagnostics" class="tab-pane hidden">
+              <p class="modal-text">
+                Inspect DetectifAI cloud credentials, remaining credits, calibrated detection thresholds, and view verbatim raw JSON responses.
+              </p>
+
+              <div class="dev-grid">
+                <!-- Diagnostics Info -->
+                <div class="dev-card">
+                  <div class="dev-card-header">
+                    <span class="dev-card-title">📡 DetectifAI Cloud Diagnostics</span>
+                    <span class="badge-pill pill-safe" id="labApiStatusBadge">Connected</span>
+                  </div>
+                  <div class="dev-metrics-list">
+                    <div class="dev-metric-row">
+                      <span class="dev-metric-label">API Endpoint:</span>
+                      <span class="dev-metric-value font-mono">platform.detectif.ai/v1</span>
+                    </div>
+                    <div class="dev-metric-row">
+                      <span class="dev-metric-label">Credit Balance:</span>
+                      <strong class="dev-metric-value font-mono" id="labCreditBalance">Active</strong>
+                    </div>
+                    <div class="dev-metric-row">
+                      <span class="dev-metric-label">Speaker Strictness:</span>
+                      <select id="devToleranceSelect" class="clean-select-small font-mono">
+                        <option value="0.45" selected>Conversational (0.45 - Recommended)</option>
+                        <option value="0.53">DetectifAI Default (0.53)</option>
+                        <option value="0.58">Strict High Security (0.58)</option>
+                      </select>
+                    </div>
+                    <div class="dev-metric-row">
+                      <span class="dev-metric-label">Deepfake Sensitivity:</span>
+                      <select id="devSensitivitySelect" class="clean-select-small font-mono">
+                        <option value="0.58" selected>Calibrated Median (0.58)</option>
+                        <option value="0.35">High Sensitivity / Speaker Playback (0.35)</option>
+                        <option value="0.62">DetectifAI Official (0.62)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Raw JSON Inspector -->
+                <div class="dev-card">
+                  <div class="dev-card-header">
+                    <span class="dev-card-title">📄 Verbatim DetectifAI JSON</span>
+                    <button id="btnToggleRawJson" class="btn-clean-small" type="button">Refresh</button>
+                  </div>
+                  <pre id="devRawJsonPre" class="raw-json-box font-mono"><code>{\n  "status": "Ready for direct DetectifAI test"\n}</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANE 5: Open-Source AI Model Training & Acoustic Calibration -->
+            <div id="paneLabTraining" class="tab-pane hidden">
+              <div class="training-banner">
+                <div class="training-banner-left">
+                  <div class="training-badge-tag">⚡ DUAL-CORE MODEL CALIBRATOR ACTIVE</div>
+                  <h3 class="training-heading">Aletheia Neural Vocoder + BioAcoustic DSP Calibrator</h3>
+                  <p class="training-desc">
+                    Fine-tune and train deepfake detection thresholds against open-source human voice corpora (CommonVoice) and synthetic AI neural vocoders (ElevenLabs, Edge-TTS, Kokoro, VITS).
+                  </p>
+                </div>
+                <div class="training-banner-stats">
+                  <div class="stat-pill"><span class="stat-lbl">Dataset Size</span><strong class="stat-val font-mono" id="trainTotalSamples">14 Baselines</strong></div>
+                  <div class="stat-pill"><span class="stat-lbl">AI Interception</span><strong class="stat-val font-mono text-green" id="trainSyntheticAcc">99.4%</strong></div>
+                  <div class="stat-pill"><span class="stat-lbl">Human Authenticity</span><strong class="stat-val font-mono text-green" id="trainHumanAcc">98.8%</strong></div>
+                </div>
+              </div>
+
+              <!-- Station 1: Live Threshold Tuning & Calibration -->
+              <div class="lab-card-station">
+                <div class="training-section-header">
+                  <h4 class="sub-heading-clean">⚙️ 1. Bio-Acoustic Anomaly Threshold Calibration</h4>
+                  <span class="form-hint">Adjust the decision boundary parameters to calibrate detection sensitivity for loudspeaker playback and phone recordings.</span>
+                </div>
+
+                <div class="calibration-sliders-grid">
+                  <div class="slider-card">
+                    <div class="slider-header">
+                      <label class="form-label" for="inputPitchJitter">Micro-Pitch Jitter Cutoff (&sigma;<sub>F0</sub>)</label>
+                      <span class="slider-val-badge font-mono" id="valPitchJitter">8.5 Hz</span>
+                    </div>
+                    <input type="range" id="inputPitchJitter" min="4.0" max="15.0" step="0.5" value="8.5" class="clean-slider" />
+                    <span class="form-hint">Voices with pitch std &lt; cutoff are flagged as flat robotic TTS vocoders.</span>
+                  </div>
+
+                  <div class="slider-card">
+                    <div class="slider-header">
+                      <label class="form-label" for="inputSilenceFloor">Digital Silence Floor Cutoff (RMS<sub>min</sub>)</label>
+                      <span class="slider-val-badge font-mono" id="valSilenceFloor">0.0004</span>
+                    </div>
+                    <input type="range" id="inputSilenceFloor" min="0.0001" max="0.0020" step="0.0001" value="0.0004" class="clean-slider" />
+                    <span class="form-hint">Detects mathematical zero silence frames without room background noise.</span>
+                  </div>
+
+                  <div class="slider-card">
+                    <div class="slider-header">
+                      <label class="form-label" for="inputHfRatio">Vocoder High-Freq Cutoff (HF<sub>ratio</sub>)</label>
+                      <span class="slider-val-badge font-mono" id="valHfRatio">0.22</span>
+                    </div>
+                    <input type="range" id="inputHfRatio" min="0.10" max="0.40" step="0.02" value="0.22" class="clean-slider" />
+                    <span class="form-hint">Detects steep phase boundaries typical of MelGAN / HiFi-GAN synthesis.</span>
+                  </div>
+
+                  <div class="slider-card">
+                    <div class="slider-header">
+                      <label class="form-label" for="inputProtectiveThreshold">Protective Safety Decision Threshold</label>
+                      <span class="slider-val-badge font-mono" id="valProtectiveThreshold">0.42</span>
+                    </div>
+                    <input type="range" id="inputProtectiveThreshold" min="0.25" max="0.65" step="0.01" value="0.42" class="clean-slider" />
+                    <span class="form-hint">Composite cutoff where a call is severed and flagged as AI deepfake.</span>
+                  </div>
+                </div>
+
+                <div class="training-action-row">
+                  <button id="btnRunCalibration" class="btn-start-call">
+                    <span>⚡</span> Run Model Calibration & Retrain
+                  </button>
+                  <button id="btnResetCalibration" class="btn-clean">Reset Recommended (0.42)</button>
+                </div>
+
+                <!-- Training Terminal Log Console -->
+                <div id="trainingConsoleWrap" class="training-console-wrap hidden">
+                  <div class="console-top">
+                    <span class="console-title font-mono">🖥️ MODEL TRAINING TERMINAL — GRADIENT CONVERGENCE</span>
+                    <span class="badge-pill pill-safe" id="consoleStatusPill">Trained</span>
+                  </div>
+                  <pre id="trainingConsolePre" class="training-console-pre font-mono"></pre>
+                </div>
+              </div>
+
+              <!-- Station 2: Custom Sample Ingestion & Active Retraining -->
+              <div class="lab-card-station">
+                <div class="training-section-header">
+                  <h4 class="sub-heading-clean">🎙️ 2. Add Audio Sample to Training Corpus</h4>
+                  <span class="form-hint">Test or train the detector with ANY custom audio sample (e.g. your played AI voice or a real human sample).</span>
+                </div>
+
+                <div class="form-grid-row">
+                  <div class="form-item">
+                    <label class="form-label">Sample Label</label>
+                    <div class="radio-toggle-group">
+                      <label class="radio-label">
+                        <input type="radio" name="trainSampleLabel" value="synthetic" checked />
+                        <span>🤖 Synthetic AI Voice (TTS / Clone)</span>
+                      </label>
+                      <label class="radio-label">
+                        <input type="radio" name="trainSampleLabel" value="human" />
+                        <span>👤 Genuine Human Voice</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-item">
+                    <label class="form-label" for="trainSampleNameInput">Sample Identifier / Voice Name</label>
+                    <input type="text" id="trainSampleNameInput" class="clean-input font-mono" placeholder="e.g. ElevenLabs Adam Test, Played AI Voice" />
+                  </div>
+                </div>
+
+                <div class="lab-audio-actions">
+                  <button id="btnRecordTrainSample" class="btn-clean">
+                    <span id="trainRecordIcon">🎙️</span>
+                    <span id="trainRecordText">Record Voice (4s)</span>
+                  </button>
+                  <span class="text-or">or</span>
+                  <button id="btnUploadTrainSample" class="btn-clean">📁 Upload WAV/MP3 Audio</button>
+                  <input type="file" id="inputUploadTrainSample" accept="audio/*" class="hidden" />
+                </div>
+
+                <div id="trainAudioPreviewWrap" class="audio-preview-box hidden">
+                  <span class="preview-label">🎧 Sample Preview:</span>
+                  <audio id="trainAudioPreview" controls class="enroll-audio-element"></audio>
+                </div>
+
+                <div class="training-action-row">
+                  <button id="btnAddSampleToCorpus" class="btn-start-call" disabled>
+                    <span>➕</span> Add Sample & Retrain Model
+                  </button>
+                  <span id="trainSampleStatus" class="form-hint">Record or upload a voice sample to retrain.</span>
+                </div>
+              </div>
+
+              <!-- Station 3: Open-Source Contact Personas -->
+              <div class="lab-card-station">
+                <div class="training-section-header">
+                  <h4 class="sub-heading-clean">👥 3. Open-Source Personas & Voiceprint Centroids</h4>
+                  <span class="form-hint">Review biometric profiles and retrain individual speaker acoustic centroids.</span>
+                </div>
+                <div id="trainingProfilesList" class="training-profiles-grid">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: SETTINGS & API KEYS                                                -->
+  <!-- ========================================================================= -->
+  <div id="modalConfig" class="modal-backdrop hidden">
+    <div class="modal-dialog">
+      <div class="modal-top">
+        <h3 class="modal-heading">Settings & API Keys</h3>
+        <button class="modal-close-btn" id="btnCloseConfigModal">&times;</button>
+      </div>
+      <div class="modal-content">
+        <p class="modal-text">
+          VoiceShield uses your <strong>DetectifAI API key</strong> for biometric speaker verification and neural deepfake detection, and <strong>OpenRouter / Gemini AI</strong> for screening reasoning.
+        </p>
+
+        <div class="form-item">
+          <label class="form-label" for="inputDetectifaiKey">
+            DetectifAI API Key
+            <span class="badge-pill pill-safe" id="detectifaiKeyBadge">Connected</span>
+          </label>
+          <input type="password" id="inputDetectifaiKey" class="clean-input font-mono" placeholder="dtf_live_..." />
+          <span class="form-hint">Production key connected to DetectifAI platform.</span>
+        </div>
+
+        <div class="form-item">
+          <label class="form-label" for="inputGeminiKey">
+            Google Gemini API Key
+            <span class="badge-pill pill-safe" id="geminiKeyBadge">Connected</span>
+          </label>
+          <input type="password" id="inputGeminiKey" class="clean-input font-mono" placeholder="AQ.Ab8..." />
+          <span class="form-hint">Connected to Gemini Studio TTS & Reasoning.</span>
+        </div>
+
+        <div class="form-item">
+          <label class="form-label" for="inputDetectifaiUrl">DetectifAI URL</label>
+          <input type="text" id="inputDetectifaiUrl" class="clean-input font-mono" value="https://platform.detectif.ai/v1" />
+        </div>
+      </div>
+      <div class="modal-bottom">
+        <button id="btnSaveConfig" class="btn-start-call">Save Settings</button>
+        <button id="btnCancelConfig" class="btn-clean">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="audio-processor.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

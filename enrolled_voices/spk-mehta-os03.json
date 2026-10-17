@@ -1,0 +1,28 @@
+{
+  "id": "spk-mehta-os03",
+  "name": "Dr. Mehta",
+  "role": "Family Physician / Trusted Doctor",
+  "samples": 3,
+  "vectors": [
+    [
+      0.32,
+      0.1208,
+      0.48,
+      0.31,
+      0.13,
+      0.08,
+      0.1
+    ]
+  ],
+  "acousticCentroid": {
+    "medianPitchHz": 112,
+    "pitchJitterHz": 14.5,
+    "spectralDistribution": [
+      0.48,
+      0.31,
+      0.13,
+      0.08
+    ]
+  },
+  "updatedAt": "2026-10-17T08:31:39.584Z"
+}

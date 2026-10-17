@@ -1,0 +1,28 @@
+{
+  "id": "spk-vikram-os05",
+  "name": "Vikram Singh",
+  "role": "Close Colleague / Work Lead",
+  "samples": 3,
+  "vectors": [
+    [
+      0.4057,
+      0.1583,
+      0.42,
+      0.33,
+      0.15,
+      0.1,
+      0.13
+    ]
+  ],
+  "acousticCentroid": {
+    "medianPitchHz": 142,
+    "pitchJitterHz": 19,
+    "spectralDistribution": [
+      0.42,
+      0.33,
+      0.15,
+      0.1
+    ]
+  },
+  "updatedAt": "2026-10-17T08:31:39.585Z"
+}

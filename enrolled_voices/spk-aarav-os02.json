@@ -1,0 +1,28 @@
+{
+  "id": "spk-aarav-os02",
+  "name": "Aarav Patel",
+  "role": "Brother / Trusted Contact (Open-Source CommonVoice)",
+  "samples": 3,
+  "vectors": [
+    [
+      0.3486,
+      0.1333,
+      0.46,
+      0.3,
+      0.14,
+      0.1,
+      0.11
+    ]
+  ],
+  "acousticCentroid": {
+    "medianPitchHz": 122,
+    "pitchJitterHz": 16,
+    "spectralDistribution": [
+      0.46,
+      0.3,
+      0.14,
+      0.1
+    ]
+  },
+  "updatedAt": "2026-10-17T08:31:39.583Z"
+}

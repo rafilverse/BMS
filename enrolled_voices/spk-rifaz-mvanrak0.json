@@ -1,0 +1,28 @@
+{
+  "id": "spk-rifaz-mvanrak0",
+  "name": "Rifaz",
+  "role": "Family Member (Enrolled on DetectifAI)",
+  "samples": 3,
+  "vectors": [
+    [
+      0.3943,
+      0.1458,
+      0.43,
+      0.32,
+      0.15,
+      0.1,
+      0.12
+    ]
+  ],
+  "acousticCentroid": {
+    "medianPitchHz": 138,
+    "pitchJitterHz": 17.5,
+    "spectralDistribution": [
+      0.43,
+      0.32,
+      0.15,
+      0.1
+    ]
+  },
+  "updatedAt": "2026-10-17T08:31:39.586Z"
+}

@@ -17,7 +17,8 @@ const state = {
   // Manual Lab Audio Blobs
   labVerifyAudioBlob: null,
   labDeepfakeAudioBlob: null,
-  trainAudioBlob: null
+  trainAudioBlob: null,
+  useGeminiTts: true
 };
 
 const callState = {
@@ -33,6 +34,8 @@ const callState = {
 const elements = {
   statusBadge: document.getElementById('statusBadge'),
   statusText: document.getElementById('statusText'),
+  switchGeminiTts: document.getElementById('switchGeminiTts'),
+  geminiTtsStatusText: document.getElementById('geminiTtsStatusText'),
 
   // Full Screen View Containers
   viewCallGuard: document.getElementById('viewCallGuard'),
@@ -330,8 +333,33 @@ async function speakAgentStatement(text) {
     try { currentSpeechAudio.pause(); } catch(e) {}
     currentSpeechAudio = null;
   }
-  
-  // Instant, zero-lag voice synthesis
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+
+  // Check switch state
+  const isGeminiEnabled = elements.switchGeminiTts ? elements.switchGeminiTts.checked : state.useGeminiTts;
+
+  if (isGeminiEnabled) {
+    try {
+      const res = await fetch('/api/gemini/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, voice: 'Kore' })
+      });
+      const data = await res.json();
+      if (data.success && data.audioBase64) {
+        const audio = new Audio('data:audio/wav;base64,' + data.audioBase64);
+        currentSpeechAudio = audio;
+        await audio.play();
+        return;
+      }
+    } catch (err) {
+      console.warn('[Gemini TTS playback fallback]:', err.message);
+    }
+  }
+
+  // Fallback or Native Switch Mode: Instant, zero-lag browser speech
   fallbackBrowserSpeech(text);
 }
 
@@ -1139,6 +1167,22 @@ function setupSpeechRecognition() {
 // Event Listeners Binding
 // ==========================================================================
 function bindEventListeners() {
+  // Gemini Studio TTS Toggle Switch
+  if (elements.switchGeminiTts) {
+    elements.switchGeminiTts.addEventListener('change', (e) => {
+      state.useGeminiTts = e.target.checked;
+      if (elements.geminiTtsStatusText) {
+        if (state.useGeminiTts) {
+          elements.geminiTtsStatusText.textContent = 'ON';
+          elements.geminiTtsStatusText.className = 'tts-mode-indicator mode-gemini font-mono';
+        } else {
+          elements.geminiTtsStatusText.textContent = 'OFF';
+          elements.geminiTtsStatusText.className = 'tts-mode-indicator font-mono';
+        }
+      }
+    });
+  }
+
   // 1. Primary "Start Call" Button
   elements.btnStartCall.addEventListener('click', startIncomingCallFlow);
   elements.btnEndCall.addEventListener('click', endCallFlow);

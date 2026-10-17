@@ -48,7 +48,7 @@ const configState = {
   openrouterApiKey: process.env.OPENROUTER_API_KEY || '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',
   openrouterModel: process.env.OPENROUTER_MODEL || 'liquid/lfm-2.5-2.6b:free',
   
-  // Real Enrolled Profiles & Open-Source Reference Datasets
+  // Real Enrolled Profiles (Synchronized with DetectifAI Cloud)
   enrolledSpeakers: [
     {
       id: 'spk-rifaz-mvanrak0',
@@ -67,51 +67,6 @@ const configState = {
       voiceprintEnrolled: true,
       enrolledOnDetectifAI: true,
       samples: 1
-    },
-    {
-      id: 'spk-priya-os01',
-      name: 'Priya Sharma',
-      role: 'Sister / Family Contact (Open-Source CommonVoice)',
-      department: 'Trusted Family Contact',
-      voiceprintEnrolled: true,
-      enrolledOnDetectifAI: false,
-      samples: 3
-    },
-    {
-      id: 'spk-aarav-os02',
-      name: 'Aarav Patel',
-      role: 'Brother / Family Contact (Open-Source CommonVoice)',
-      department: 'Trusted Family Contact',
-      voiceprintEnrolled: true,
-      enrolledOnDetectifAI: false,
-      samples: 3
-    },
-    {
-      id: 'spk-mehta-os03',
-      name: 'Dr. Mehta',
-      role: 'Family Physician / Trusted Doctor',
-      department: 'Medical Contact',
-      voiceprintEnrolled: true,
-      enrolledOnDetectifAI: false,
-      samples: 2
-    },
-    {
-      id: 'spk-rajesh-os04',
-      name: 'Rajesh Kumar',
-      role: 'Bank Branch Manager / Financial Officer',
-      department: 'Banking & Financial Contact',
-      voiceprintEnrolled: true,
-      enrolledOnDetectifAI: false,
-      samples: 2
-    },
-    {
-      id: 'spk-vikram-os05',
-      name: 'Vikram Singh',
-      role: 'Close Colleague / Work Lead',
-      department: 'Workplace Contact',
-      voiceprintEnrolled: true,
-      enrolledOnDetectifAI: false,
-      samples: 2
     }
   ],
 
@@ -1294,14 +1249,35 @@ Provide a clean, simple, human-friendly JSON response (no markdown, pure JSON ob
   }
 });
 
-// 6. POST /api/gemini/tts (Instant Zero-Latency Browser Speech Signal)
+// 6. POST /api/gemini/tts (Gemini 24kHz Studio Speech Synthesis)
 app.post('/api/gemini/tts', async (req, res) => {
-  // Directly instruct frontend to use zero-lag native speech synthesis
-  return res.json({
-    success: false,
-    useBrowserSpeech: true,
-    message: 'Zero-latency browser speech synthesis active.'
-  });
+  try {
+    const { text, voice } = req.body;
+    if (!text || text.trim().length === 0) {
+      return res.status(400).json({ error: 'Text is required for TTS.' });
+    }
+    const audioBase64 = await generateGeminiSpeech(text, voice || 'Kore');
+    if (audioBase64) {
+      return res.json({
+        success: true,
+        engine: 'Google Gemini Studio Voice (gemini-3.8-flash-tts)',
+        audioBase64
+      });
+    } else {
+      return res.json({
+        success: false,
+        useBrowserSpeech: true,
+        message: 'Gemini TTS unavailable; using browser speech fallback.'
+      });
+    }
+  } catch (err) {
+    console.warn('[Gemini TTS Route Error]:', err.message);
+    return res.json({
+      success: false,
+      useBrowserSpeech: true,
+      error: err.message
+    });
+  }
 });
 
 // Helper for internal Gemini Speech Synthesis with Caching & Rate-limit immunity
@@ -1495,35 +1471,6 @@ function fuzzyMatchEnrolledSpeaker(word) {
       if (variants.includes(clean)) return enrolled;
     }
 
-    // Common Speech-to-Text phonetic slips for Priya Sharma
-    if (target.includes('priya') || firstName === 'priya') {
-      const variants = ['priya', 'priyaa', 'preeya', 'preya', 'priyah', 'priyasharma'];
-      if (variants.includes(clean)) return enrolled;
-    }
-
-    // Common Speech-to-Text phonetic slips for Aarav Patel
-    if (target.includes('aarav') || firstName === 'aarav') {
-      const variants = ['aarav', 'arav', 'aaravpatel', 'aravpatel', 'aaravv', 'aarof'];
-      if (variants.includes(clean)) return enrolled;
-    }
-
-    // Common Speech-to-Text phonetic slips for Dr. Mehta
-    if (target.includes('mehta') || firstName.includes('mehta')) {
-      const variants = ['mehta', 'mehtaji', 'doctor mehta', 'dr mehta'];
-      if (variants.includes(clean)) return enrolled;
-    }
-
-    // Common Speech-to-Text phonetic slips for Rajesh Kumar
-    if (target.includes('rajesh') || firstName === 'rajesh') {
-      const variants = ['rajesh', 'raajesh', 'rajeshkumar'];
-      if (variants.includes(clean)) return enrolled;
-    }
-
-    // Common Speech-to-Text phonetic slips for Vikram Singh
-    if (target.includes('vikram') || firstName === 'vikram') {
-      const variants = ['vikram', 'vickram', 'vikramsingh', 'bikram'];
-      if (variants.includes(clean)) return enrolled;
-    }
 
     // Strict Levenshtein: MUST share first letter, min length 5, and max edit distance 1
     // (Prevents words like "rahul", "bail", or "hotel" from falsely matching "rafil")

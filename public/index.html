@@ -37,6 +37,18 @@
           <span id="statusText">Line Standby</span>
         </div>
 
+        <!-- Gemini Studio Voice TTS Toggle Switch -->
+        <div class="gemini-tts-toggle-box" title="Toggle between Google Gemini Studio Voice (24kHz HD) and Instant Browser Speech">
+          <label class="switch-toggle-label" for="switchGeminiTts">
+            <span class="switch-tag font-mono">⚡ GEMINI TTS</span>
+            <div class="toggle-switch-pill">
+              <input type="checkbox" id="switchGeminiTts" checked>
+              <span class="toggle-slider-round"></span>
+            </div>
+            <span id="geminiTtsStatusText" class="tts-mode-indicator mode-gemini font-mono">ON</span>
+          </label>
+        </div>
+
         <!-- Model Training & Calibration Button -->
         <button id="btnOpenTraining" class="btn-clean btn-header-training" title="Open AI Model Training & Acoustic Calibration Suite">
           <span class="lab-icon">⚡</span>

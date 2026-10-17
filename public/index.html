@@ -19,14 +19,14 @@
     <header class="app-header">
       <div class="brand">
         <div class="brand-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.2" stroke-linecap="square">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.2" stroke-linecap="square">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             <path d="m9 12 2 2 4-4"/>
           </svg>
         </div>
         <div>
           <div class="brand-title">VoiceShield <span class="brand-pill">ConsentGuard</span></div>
-          <div class="brand-subtitle">Autonomous Call Safety Agent · DetectifAI Production Biometrics · Gemini AI Shield</div>
+          <div class="brand-subtitle">Autonomous Call Safety Shield</div>
         </div>
       </div>
 
@@ -38,7 +38,7 @@
         </div>
 
         <!-- Gemini Studio Voice TTS Toggle Switch -->
-        <div class="gemini-tts-toggle-box" title="Toggle between Google Gemini Studio Voice (24kHz HD) and Instant Browser Speech">
+        <div class="gemini-tts-toggle-box" title="Toggle between Google Gemini Studio Voice and Native Speech">
           <label class="switch-toggle-label" for="switchGeminiTts">
             <span class="switch-tag font-mono">⚡ GEMINI TTS</span>
             <div class="toggle-switch-pill">
@@ -50,20 +50,20 @@
         </div>
 
         <!-- Model Training & Calibration Button -->
-        <button id="btnOpenTraining" class="btn-clean btn-header-training" title="Open AI Model Training & Acoustic Calibration Suite">
+        <button id="btnOpenTraining" class="btn-clean btn-header-training" title="Model Training">
           <span class="lab-icon">⚡</span>
-          <span id="btnTrainingNavText">Model Training</span>
+          <span id="btnTrainingNavText">Training</span>
         </button>
 
         <!-- Fullscreen Manual Testing Mode Toggle Button -->
-        <button id="btnOpenManualLab" class="btn-clean" title="Open DetectifAI Manual Testing Lab">
+        <button id="btnOpenManualLab" class="btn-clean" title="Manual Testing Lab">
           <span class="lab-icon">🧪</span>
-          <span id="btnLabNavText">Manual Testing Mode</span>
+          <span id="btnLabNavText">Manual Lab</span>
         </button>
 
         <!-- Settings Button -->
-        <button id="btnOpenSettings" class="btn-clean" title="Settings & API Keys">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <button id="btnOpenSettings" class="btn-clean" title="Settings & Keys">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="3"></circle>
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
           </svg>
@@ -83,7 +83,7 @@
         <!-- Call Action & Status Row -->
         <div class="call-control-bar">
           <div class="call-btn-wrap">
-            <button id="btnStartCall" class="btn-start-call" title="Simulate incoming call to woman: 3s ring then agent steps in first">
+            <button id="btnStartCall" class="btn-start-call" title="Start screening simulation">
               <span class="phone-ring-icon">📞</span>
               <span id="btnStartCallText">Start Call</span>
             </button>
@@ -98,7 +98,7 @@
               <span id="callStageBadge" class="badge-pill pill-neutral">STANDBY</span>
             </div>
             <div id="callStatusDesc" class="line-status-desc">
-              Ready. Click "Start Call" — rings for 3 seconds, then VoiceShield answers to screen the caller before the woman speaks.
+              Ready to screen incoming caller.
             </div>
           </div>
 
@@ -110,26 +110,26 @@
             </div>
             <div class="caller-ident-name">
               <span class="caller-avatar">👤</span>
-              <span id="textCallerIdentity" class="caller-name-text">Asking caller...</span>
+              <span id="textCallerIdentity" class="caller-name-text">Awaiting caller...</span>
             </div>
             <div id="textCallerRoleHint" class="caller-hint-text">
-              Agent greets & asks caller for name & reason before woman speaks
+              Identity unverified
             </div>
           </div>
         </div>
 
-        <!-- External Caller Input Box (The User is Calling the Woman) -->
+        <!-- External Caller Input Box -->
         <div class="caller-input-station">
           <div class="caller-input-header">
-            <span class="input-station-title">🎙️ CALLER SPEECH (You are the incoming caller to the woman)</span>
-            <span class="input-station-sub" id="callerShieldHint">The recipient (woman) is shielded and silent until call is verified safe.</span>
+            <span class="input-station-title">Caller Audio Input</span>
+            <span class="input-station-sub" id="callerShieldHint">Line shielded</span>
           </div>
 
           <div class="caller-input-row">
             <!-- Audio Record Button -->
             <button id="btnToggleMonitor" class="btn-record-voice">
               <span class="mic-circle">🎙️</span>
-              <span id="btnMonitorText">Record Caller Speech</span>
+              <span id="btnMonitorText">Record Voice</span>
             </button>
 
             <!-- Waveform visualizer -->
@@ -139,85 +139,79 @@
             </div>
           </div>
 
-          <!-- Quick Text Input (For immediate testing or typed caller utterances) -->
+          <!-- Quick Text Input -->
           <div class="quick-text-row">
-            <input type="text" id="manualUtteranceInput" class="clean-input font-mono" placeholder="Type caller speech here (or speak via microphone above)..." />
-            <button id="btnSendManualUtterance" class="btn-send-speech">Send Caller Speech</button>
+            <input type="text" id="manualUtteranceInput" class="clean-input font-mono" placeholder="Speak via mic or type message..." />
+            <button id="btnSendManualUtterance" class="btn-send-speech">Send</button>
           </div>
         </div>
 
       </section>
 
-      <!-- 4 Structured Multi-Level Protection Cards (Sharp corners, 1px thin border, NO shadows) -->
+      <!-- 4 Structured Multi-Level Protection Cards -->
       <section class="cards-grid-four">
         
         <!-- Card 1: Level 1 Synthetic Voice -->
         <div class="sharp-card" id="cardVoice">
           <div class="card-head">
-            <span class="card-title-text">Level 1: Synthetic Voice</span>
+            <span class="card-title-text">1. Synthetic Voice</span>
             <span class="badge-pill pill-neutral" id="pillVoice">Standby</span>
           </div>
           <div class="card-metric">
-            <span class="metric-big font-mono" id="textVoiceTitle">AI Score: --</span>
-            <span class="cutoff-tag font-mono" id="textVoiceThreshold">Cutoff: 0.58</span>
+            <span class="metric-big font-mono" id="textVoiceTitle">AI: --</span>
+            <span class="cutoff-tag font-mono" id="textVoiceThreshold">&gt;0.58</span>
           </div>
-          <div class="card-sub" id="textVoiceSub">Awaiting audio to evaluate neural deepfake score...</div>
+          <div class="card-sub" id="textVoiceSub">Neural deepfake scan</div>
         </div>
 
         <!-- Card 2: Level 2 Biometric Match -->
         <div class="sharp-card" id="cardSpeaker">
           <div class="card-head">
-            <span class="card-title-text">Level 2: Biometric Match</span>
+            <span class="card-title-text">2. Biometric Match</span>
             <span class="badge-pill pill-neutral" id="pillSpeaker">Standby</span>
           </div>
           <div class="card-metric">
-            <span class="metric-big font-mono" id="textSpeakerTitle">Similarity: --</span>
-            <span class="cutoff-tag font-mono" id="textSpeakerThreshold">Cutoff: 0.45</span>
+            <span class="metric-big font-mono" id="textSpeakerTitle">Match: --</span>
+            <span class="cutoff-tag font-mono" id="textSpeakerThreshold">&gt;0.45</span>
           </div>
-          <div class="card-sub" id="textSpeakerSub">Target enrolled contact verification...</div>
+          <div class="card-sub" id="textSpeakerSub">Voiceprint verification</div>
         </div>
 
         <!-- Card 3: Level 3 Dynamic Challenge -->
         <div class="sharp-card" id="cardFollowUp">
           <div class="card-head">
-            <span class="card-title-text">Level 3: Dynamic Challenge</span>
+            <span class="card-title-text">3. Dynamic Challenge</span>
             <span class="badge-pill pill-neutral" id="pillFollowUp">Ready</span>
           </div>
           <div class="card-metric">
             <span class="metric-big" id="textFollowUpTitle">Screening Active</span>
           </div>
-          <div class="card-sub" id="textFollowUpSub">No counter-question needed yet</div>
+          <div class="card-sub" id="textFollowUpSub">Standby</div>
         </div>
 
         <!-- Card 4: Level 4 Coercion & Dynamically Predicted Threat Pattern -->
         <div class="sharp-card" id="cardRequest">
           <div class="card-head">
-            <span class="card-title-text">Level 4: Threat Pattern</span>
+            <span class="card-title-text">4. Threat Pattern</span>
             <span class="badge-pill pill-neutral" id="pillRequest">Standby</span>
           </div>
           <div class="card-metric">
-            <span class="metric-big" id="textRequestTitle">Pattern: Standby</span>
+            <span class="metric-big" id="textRequestTitle">Pattern: --</span>
           </div>
-          <div class="card-sub" id="textRequestSub">Predicted dynamically based on caller speech</div>
+          <div class="card-sub" id="textRequestSub">Intent analysis</div>
         </div>
 
       </section>
 
-      <!-- ===================================================================== -->
-      <!-- DYNAMIC DECISION OUTCOME CONTAINERS (Displayed based on AI decision)  -->
-      <!-- ===================================================================== -->
-
-      <!-- Outcome boxes removed from here - now integrated directly into Composite Threat Assessment Section -->
-
-      <!-- Main Content: Clean 2-Column Split (Sharp rectangular boxes, 0 radius, 0 shadow) -->
+      <!-- Main Content: Clean 2-Column Split -->
       <main class="content-split-grid">
         
         <!-- Left Column: Live Call Interception Transcript -->
         <section class="sharp-content-card">
           <div class="card-bar-clean">
             <div>
-              <h2 class="section-title">Live Call Interception Transcript</h2>
-              <div class="section-caption">Agent speaks first · Verifies identity & intent · Woman speaks only when forwarded</div>
+              <h2 class="section-title">Call Transcript</h2>
+              <div class="section-caption">Real-time screening dialogue</div>
             </div>
             <button id="btnClearTranscript" class="btn-clean-small">Clear</button>
           </div>
@@ -225,8 +219,7 @@
           <!-- Conversation Stream -->
           <div class="transcript-box" id="transcriptContainer">
             <div class="empty-state-hint" id="transcriptPlaceholder">
-              <p><strong>Click "Start Call" above</strong> to initiate incoming call screening.</p>
-              <p class="text-muted-small">Phone rings for 3 seconds, then VoiceShield answers first and asks for caller identity.</p>
+              <p>Click <strong>Start Call</strong> to begin screening.</p>
             </div>
             <div class="chat-feed hidden" id="transcriptFeed"></div>
           </div>
@@ -236,8 +229,8 @@
         <section class="sharp-content-card">
           <div class="card-bar-clean">
             <div>
-              <h2 class="section-title">Composite Threat Assessment</h2>
-              <div class="section-caption">Multi-Factor Threat Fusion & Verification Analysis</div>
+              <h2 class="section-title">Threat Assessment</h2>
+              <div class="section-caption">Multi-factor security fusion</div>
             </div>
             <span class="badge-pill pill-safe" id="copilotVerdictBadge">Standby</span>
           </div>
@@ -245,7 +238,7 @@
           <!-- Composite Score Gauge Box -->
           <div class="gauge-card-sharp">
             <div class="gauge-top-row">
-              <span class="gauge-label">Composite Fraud & Coercion Risk:</span>
+              <span class="gauge-label">Composite Risk:</span>
               <span class="gauge-score font-mono" id="compositeScoreValue">0%</span>
             </div>
             <div class="meter-track-sharp">
@@ -261,50 +254,43 @@
           <!-- Screening Interception Action & Line Status Panel -->
           <div id="compositeActionBox" class="composite-action-panel status-idle">
             <div class="action-panel-top">
-              <span class="action-panel-tag font-mono">ASSISTANT ACTION</span>
-              <span id="compositeActionBadge" class="badge-pill pill-neutral">STANDBY · SHIELD ARMED</span>
+              <span class="action-panel-tag font-mono">AGENT ACTION</span>
+              <span id="compositeActionBadge" class="badge-pill pill-neutral">STANDBY</span>
             </div>
             <div id="compositeActionDesc" class="action-panel-desc">
-              VoiceShield screening assistant intercepts incoming callers. Recipient is protected from unverified lines.
+              VoiceShield active. Line shielded until verified.
             </div>
             <div id="compositeCounterQuoteBox" class="counter-quote-mini hidden">
-              <div class="counter-quote-label font-mono">ACTIVE SCREENING QUESTION:</div>
+              <div class="counter-quote-label font-mono">CHALLENGE QUESTION:</div>
               <div id="activeCounterQuestionText" class="counter-quote-text">"Hello, may I ask who is calling?"</div>
-              <div class="counter-quote-hint">➡️ Caller must speak or type answer to proceed</div>
             </div>
           </div>
 
           <!-- Recipient Protection Guidance & Action Advisory -->
           <div id="compositeGuidanceBox" class="composite-guidance-panel hidden">
             <div class="guidance-panel-top">
-              <span class="guidance-panel-tag">🛡️ RECIPIENT PROTECTION ADVISORY</span>
+              <span class="guidance-panel-tag">PROTECTION ADVISORY</span>
               <span id="guidanceRiskPill" class="badge-pill pill-danger">HIGH RISK</span>
             </div>
             <div class="guidance-section-block">
-              <div class="guidance-block-label">Situation Analysis:</div>
+              <div class="guidance-block-label">Situation:</div>
               <div id="seriousThreatSituation" class="guidance-situation-text">Threat intercepted on line.</div>
             </div>
             <div class="guidance-section-block">
-              <div class="guidance-block-label">Important Instructions for Recipient:</div>
+              <div class="guidance-block-label">Instructions:</div>
               <div id="seriousThreatInstructions" class="guidance-instructions-text">
-                1. Do not comply with any transfer or OTP demands.<br>
-                2. Real police or authorities never arrest over video or phone calls.<br>
-                3. Call terminated. Call 1930 (Cyber Crime Helpline) if harassment continues.
+                1. Do not transfer funds or share OTP.<br>
+                2. Authorities never conduct arrests over phone/video calls.<br>
+                3. Call 1930 (Cyber Helpline) if harassment continues.
               </div>
             </div>
           </div>
 
           <!-- Threat Explanation & Safety Breakdown -->
           <div class="copilot-advice-container" id="adviceContainer">
-            <div class="advice-section-title">Safety Analysis & Telemetry:</div>
+            <div class="advice-section-title">Telemetry & Rationale:</div>
             <div class="advice-top-explanation" id="adviceExplanation">
-              Line is idle. Click "Start Call" to begin screening incoming caller before recipient is exposed.
-            </div>
-
-            <div class="protection-checklist">
-              <div class="check-item"><span class="check-icon font-mono">[✓]</span> Voice authenticity checked on DetectifAI neural models</div>
-              <div class="check-item"><span class="check-icon font-mono">[✓]</span> Biometric voiceprint matched against enrolled contacts</div>
-              <div class="check-item"><span class="check-icon font-mono">[✓]</span> Scans dynamically for digital arrest, extortion & coercion</div>
+              Line idle.
             </div>
           </div>
         </section>
@@ -326,21 +312,21 @@
               ← Back to Call Interception
             </button>
             <div>
-              <h2 class="lab-main-title">🧪 DetectifAI Manual Testing Lab</h2>
-              <p class="lab-main-sub">Direct biometrics, multi-sample training & deepfake neural verification (Direct API · Zero AI agents)</p>
+              <h2 class="lab-main-title">🧪 Biometrics Lab</h2>
+              <p class="lab-main-sub">Direct DetectifAI API diagnostics & acoustic calibration</p>
             </div>
           </div>
-          <div class="badge-pill pill-safe">DetectifAI Cloud Active</div>
+          <div class="badge-pill pill-safe">DetectifAI Active</div>
         </div>
 
         <!-- Fullscreen Tab Navigation -->
         <div class="lab-fullscreen-body">
           <div class="modal-tabs-header lab-tabs-clean">
-            <button id="tabLabEnroll" class="modal-tab-btn active">🎙️ 1. Voice Enrollment & Vault</button>
-            <button id="tabLabVerify" class="modal-tab-btn">👤 2. Speaker Verification (Direct Eidos)</button>
-            <button id="tabLabDeepfake" class="modal-tab-btn">🤖 3. Deepfake Detection (Direct Aletheia)</button>
-            <button id="tabLabDiagnostics" class="modal-tab-btn">🛠️ 4. Diagnostics & Telemetry</button>
-            <button id="tabLabTraining" class="modal-tab-btn tab-highlight">⚡ 5. Model Training & Calibration</button>
+            <button id="tabLabEnroll" class="modal-tab-btn active">🎙️ 1. Enrollment Vault</button>
+            <button id="tabLabVerify" class="modal-tab-btn">👤 2. Verification</button>
+            <button id="tabLabDeepfake" class="modal-tab-btn">🤖 3. Deepfake Detection</button>
+            <button id="tabLabDiagnostics" class="modal-tab-btn">🛠️ 4. Diagnostics</button>
+            <button id="tabLabTraining" class="modal-tab-btn tab-highlight">⚡ 5. Model Training</button>
           </div>
 
           <div class="lab-tab-content">

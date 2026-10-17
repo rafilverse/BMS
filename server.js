@@ -28,10 +28,15 @@ if (!fs.existsSync(ENROLLED_DIR)) {
 
 // Configuration State
 const configState = {
-  geminiApiKey: process.env.GEMINI_API_KEY || 'AQ.Ab8RN6KAXf5X2HmaDWeic5eCGFohpMbv6QvvWlrAIgXnlzFPXg',
+  geminiApiKey: process.env.GEMINI_API_KEY || 'AQ.Ab8RN6Il9YzLbkDO8ZvTe0bGFv1YU99paAc5NiO8xLQhC985Ag',
+  geminiFallbackKeys: [
+    process.env.GEMINI_FALLBACK_KEY,
+    'AQ.Ab8RN6KAXf5X2HmaDWeic5eCGFohpMbv6QvvWlrAIgXnlzFPXg',
+    'AQ.Ab8RN6Il9YzLbkDO8ZvTe0bGFv1YU99paAc5NiO8xLQhC985Ag'
+  ].filter(Boolean),
   detectifaiApiKey: process.env.DETECTIFAI_API_KEY || 'dtf_live_EiaJGyMX9IjpEQNk60UHL7N9KAUsGmaRh7OierG1D74',
   detectifaiBaseUrl: process.env.DETECTIFAI_BASE_URL || 'https://platform.detectif.ai/v1',
-  geminiModel: process.env.GEMINI_MODEL || 'gemini-3.5-flash',
+  geminiModel: process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
   openrouterApiKey: process.env.OPENROUTER_API_KEY || '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',
   openrouterModel: process.env.OPENROUTER_MODEL || 'liquid/lfm-2.5-2.6b:free',
   
@@ -572,44 +577,51 @@ async function callOpenRouter(systemPrompt, userPrompt, jsonMode = true) {
 
 // Resilient AI Engine: Google Gemini (Active Fast Models) -> OpenRouter -> Safe Heuristic Parser
 async function executeAiReasoning(systemPrompt, userPrompt, jsonMode = true) {
-  // 1. Primary: Google Gemini with active verified models
-  if (configState.geminiApiKey) {
+  // 1. Primary: Google Gemini with active verified models and multi-key pooling
+  const keysToTry = [
+    configState.geminiApiKey,
+    ...(configState.geminiFallbackKeys || [])
+  ].filter((k, i, a) => k && a.indexOf(k) === i);
+
+  if (keysToTry.length > 0) {
     const candidateGeminiModels = [
-      configState.geminiModel || 'gemini-3.5-flash',
-      'gemini-3.5-flash',
       'gemini-3.5-flash-lite',
+      configState.geminiModel || 'gemini-3.5-flash-lite',
+      'gemini-3.5-flash',
       'gemini-3-flash-preview'
     ];
 
-    const ai = new GoogleGenAI({ apiKey: configState.geminiApiKey });
+    for (const key of keysToTry) {
+      const ai = new GoogleGenAI({ apiKey: key });
 
-    for (const model of candidateGeminiModels) {
-      try {
-        const response = await ai.models.generateContent({
-          model: model,
-          contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] }],
-          config: {
-            temperature: 0.1,
-            responseMimeType: jsonMode ? 'application/json' : undefined
-          }
-        });
-        const text = response.text || '';
-        if (text && text.trim().length > 0) {
-          console.log(`[AI Inference] Successfully served by Gemini: ${model}`);
-          if (jsonMode) {
-            try {
-              const clean = text.replace(/```(?:json)?/g, '').replace(/```/g, '').trim();
-              const m = clean.match(/\{[\s\S]*\}/);
-              return { engine: `Google Gemini (${model})`, result: JSON.parse(m ? m[0] : clean) };
-            } catch(pe) {
-              console.warn(`[Gemini JSON Parse Error]:`, pe.message);
+      for (const model of candidateGeminiModels) {
+        try {
+          const response = await ai.models.generateContent({
+            model: model,
+            contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] }],
+            config: {
+              temperature: 0.1,
+              responseMimeType: jsonMode ? 'application/json' : undefined
             }
-          } else {
-            return { engine: `Google Gemini (${model})`, result: text };
+          });
+          const text = response.text || '';
+          if (text && text.trim().length > 0) {
+            console.log(`[AI Inference] Successfully served by Gemini (${model}) using key ...${key.slice(-6)}`);
+            if (jsonMode) {
+              try {
+                const clean = text.replace(/```(?:json)?/g, '').replace(/```/g, '').trim();
+                const m = clean.match(/\{[\s\S]*\}/);
+                return { engine: `Google Gemini (${model})`, result: JSON.parse(m ? m[0] : clean) };
+              } catch(pe) {
+                console.warn(`[Gemini JSON Parse Error]:`, pe.message);
+              }
+            } else {
+              return { engine: `Google Gemini (${model})`, result: text };
+            }
           }
+        } catch(e) {
+          console.warn(`[Gemini ${model} failover notice (key ...${key.slice(-6)})]:`, e.status || e.message);
         }
-      } catch(e) {
-        console.warn(`[Gemini ${model} failover notice]:`, e.status || e.message);
       }
     }
   }
@@ -1292,35 +1304,36 @@ async function generateGeminiSpeech(text, voice = 'Kore', style = 'calm, firm, c
     return speechCache.get(cacheKey);
   }
 
-  if (!configState.geminiApiKey) return null;
-  try {
-    const ai = new GoogleGenAI({ apiKey: configState.geminiApiKey });
-    const response = await ai.interactions.create({
-      model: 'gemini-3.8-flash-tts',
-      input: [
-        {
-          type: 'user_input',
-          content: [
-            {
-              type: 'text',
-              text: text.trim(),
-              annotations: [{ type: 'speech_metadata', style }]
-            }
-          ]
+  const keysToTry = [
+    configState.geminiApiKey,
+    ...(configState.geminiFallbackKeys || [])
+  ].filter((k, i, a) => k && a.indexOf(k) === i);
+
+  if (keysToTry.length === 0) return null;
+
+  for (const key of keysToTry) {
+    try {
+      const ai = new GoogleGenAI({ apiKey: key });
+      const response = await ai.models.generateContent({
+        model: 'gemini-3.8-flash-tts',
+        contents: text.trim(),
+        config: {
+          responseModalities: ['AUDIO'],
+          speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } }
         }
-      ],
-      response_format: { type: 'audio', mime_type: 'audio/wav', sample_rate: 24000 },
-      generation_config: { speech_config: [{ voice }] }
-    });
-    const audioData = response.output_audio?.data || null;
-    if (audioData) {
-      speechCache.set(cacheKey, audioData);
+      });
+      const parts = response.candidates?.[0]?.content?.parts || [];
+      const audioPart = parts.find(p => p.inlineData?.mimeType?.startsWith('audio/'));
+      const audioData = audioPart?.inlineData?.data || null;
+      if (audioData) {
+        speechCache.set(cacheKey, audioData);
+        return audioData;
+      }
+    } catch (err) {
+      console.warn(`[Gemini TTS (key ...${key.slice(-6)})]:`, err.message);
     }
-    return audioData;
-  } catch (err) {
-    console.warn('[Gemini TTS Rate Limit / Notice]:', err.message, '-> Handing off to unlimited browser speech.');
-    return null;
   }
+  return null;
 }
 
 // 7. GET /api/screening/initial-inquiry: Generates the opening screening question before the woman speaks

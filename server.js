@@ -21,9 +21,17 @@ app.use(express.json({ limit: '40mb' }));
 app.use(express.urlencoded({ extended: true, limit: '40mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const ENROLLED_DIR = path.join(__dirname, 'enrolled_voices');
-if (!fs.existsSync(ENROLLED_DIR)) {
-  fs.mkdirSync(ENROLLED_DIR, { recursive: true });
+let ENROLLED_DIR = path.join(__dirname, 'enrolled_voices');
+try {
+  if (!fs.existsSync(ENROLLED_DIR)) {
+    fs.mkdirSync(ENROLLED_DIR, { recursive: true });
+  }
+} catch (e) {
+  // Read-only filesystem in Vercel lambda -> fallback to /tmp
+  ENROLLED_DIR = path.join(require('os').tmpdir(), 'enrolled_voices');
+  if (!fs.existsSync(ENROLLED_DIR)) {
+    try { fs.mkdirSync(ENROLLED_DIR, { recursive: true }); } catch (err) {}
+  }
 }
 
 // Configuration State
@@ -2257,12 +2265,18 @@ async function syncDetectifAISpeakers() {
   }
 }
 
-// Start Server
-app.listen(PORT, async () => {
-  console.log(`=======================================================`);
-  console.log(`🛡️  VoiceShield (ConsentGuard) — Autonomous Safety Agent`);
-  console.log(`🚀 Running at: http://localhost:${PORT}`);
-  console.log(`=======================================================`);
-  await syncDetectifAISpeakers();
-});
+// Start Server (Standalone Node or Serverless on Vercel)
+if (!process.env.VERCEL) {
+  app.listen(PORT, async () => {
+    console.log(`=======================================================`);
+    console.log(`🛡️  VoiceShield (ConsentGuard) — Autonomous Safety Agent`);
+    console.log(`🚀 Running at: http://localhost:${PORT}`);
+    console.log(`=======================================================`);
+    await syncDetectifAISpeakers();
+  });
+} else {
+  syncDetectifAISpeakers().catch(() => {});
+}
+
+module.exports = app;
 

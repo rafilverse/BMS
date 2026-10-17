@@ -21,6 +21,42 @@ app.use(express.json({ limit: '40mb' }));
 app.use(express.urlencoded({ extended: true, limit: '40mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Global Shared Screening State for Realtime Mobile UI
+let activeMobileCallState = {
+  active: false,
+  stage: 'idle', // idle, incoming_ring, agent_screening, caller_speaking, user_can_talk, terminated
+  callerName: 'Unknown Caller',
+  callerNumber: '+91 98472 19402',
+  isEnrolled: false,
+  agentSpokenStatement: '',
+  callerSpokenStatement: '',
+  threatStatus: 'SAFE', // SAFE, CAUTION, DANGER
+  detectedPattern: '',
+  userAllowedToTalk: false,
+  suggestionForUser: 'Stay on mute. VoiceShield agent is screening caller...',
+  lastUpdated: Date.now()
+};
+
+// Route: Serve /mobile interface
+app.get('/mobile', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'mobile.html'));
+});
+
+// Route: Get current mobile call state
+app.get('/api/mobile/state', (req, res) => {
+  res.json(activeMobileCallState);
+});
+
+// Route: Update mobile call state
+app.post('/api/mobile/state', (req, res) => {
+  activeMobileCallState = {
+    ...activeMobileCallState,
+    ...req.body,
+    lastUpdated: Date.now()
+  };
+  res.json({ success: true, state: activeMobileCallState });
+});
+
 let ENROLLED_DIR = path.join(__dirname, 'enrolled_voices');
 try {
   if (!fs.existsSync(ENROLLED_DIR)) {
@@ -2140,6 +2176,27 @@ Return pure JSON:
       coercionAnalysis.callAction = 'COUNTER_QUESTION';
       totalCompositeScore = Math.min(65, Math.max(35, totalCompositeScore));
     }
+
+    // Sync with mobile interface state
+    activeMobileCallState = {
+      active: coercionAnalysis.callAction !== 'HANGUP_TERMINATE',
+      stage: coercionAnalysis.callAction === 'FORWARD_TO_WOMAN' ? 'user_can_talk' : (coercionAnalysis.callAction === 'HANGUP_TERMINATE' ? 'terminated' : 'agent_screening'),
+      callerName: identityData.claimedName || 'Unknown Caller',
+      callerNumber: '+91 98472 19402',
+      isEnrolled: Boolean(identityData.matchedEnrolledSpeakerId),
+      agentSpokenStatement: coercionAnalysis.agentSpokenStatement || '',
+      callerSpokenStatement: transcript,
+      threatStatus: status,
+      detectedPattern: coercionAnalysis.detectedPattern || '',
+      userAllowedToTalk: coercionAnalysis.callAction === 'FORWARD_TO_WOMAN',
+      suggestionForUser: coercionAnalysis.callAction === 'FORWARD_TO_WOMAN'
+        ? 'Call verified safe. You can unmute and speak now!'
+        : (coercionAnalysis.callAction === 'HANGUP_TERMINATE'
+            ? 'Threat intercepted. Call blocked and severed!'
+            : 'Stay quiet. VoiceShield agent is screening caller intent...'),
+      womanGuidance: coercionAnalysis.womanGuidance,
+      lastUpdated: Date.now()
+    };
 
     return res.json({
       success: true,

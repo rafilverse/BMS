@@ -213,11 +213,39 @@ body {
   color: var(--text-main);
 }
 
-/* Call Screening Station Card */
-.station-card {
+/* Unified Live Call Screening Console (Single Box with Clean Inner Divisions) */
+.unified-console-box {
   background: var(--bg-card);
   border: 1px solid var(--border-main);
-  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.console-division {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-main);
+}
+.console-division:last-child {
+  border-bottom: none;
+}
+
+.division-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.division-metrics {
+  background: #FCFDFF;
+  padding: 14px 20px;
+}
+
+.division-split {
+  padding: 16px 20px;
+}
+
+/* Call Screening Station Card (Legacy container alias) */
+.station-card {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -229,7 +257,7 @@ body {
   grid-template-columns: auto 1fr auto;
   gap: 16px;
   align-items: stretch;
-  padding-bottom: 16px;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -681,7 +709,18 @@ body {
 .content-split-grid {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 14px;
+  gap: 16px;
+}
+
+.split-col-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.split-col-panel:first-child {
+  padding-right: 16px;
+  border-right: 1px solid var(--border-subtle);
 }
 
 .sharp-content-card {

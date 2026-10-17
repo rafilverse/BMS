@@ -77,225 +77,231 @@
     <!-- ======================================================================= -->
     <div id="viewCallGuard" class="app-view">
       
-      <!-- Autonomous Call Screening Station (Hero) -->
-      <section class="station-card">
+      <!-- Unified Live Call Screening Console (Single Box with Clean Inner Divisions) -->
+      <div class="unified-console-box">
         
-        <!-- Call Action & Status Row -->
-        <div class="call-control-bar">
-          <div class="call-btn-wrap">
-            <button id="btnStartCall" class="btn-start-call" title="Start screening simulation">
-              <span class="phone-ring-icon">📞</span>
-              <span id="btnStartCallText">Start Call</span>
-            </button>
-            <button id="btnEndCall" class="btn-end-call hidden" title="End / Reset Call">
-              <span>✕</span> End Call
-            </button>
-          </div>
-
-          <div class="line-status-display">
-            <div class="line-status-top">
-              <span class="meta-label">Line Status</span>
-              <span id="callStageBadge" class="badge-pill pill-neutral">STANDBY</span>
+        <!-- Division 1: Call Control & Status Hero -->
+        <section class="console-division division-hero">
+          <div class="call-control-bar">
+            <div class="call-btn-wrap">
+              <button id="btnStartCall" class="btn-start-call" title="Start screening simulation">
+                <span class="phone-ring-icon">📞</span>
+                <span id="btnStartCallText">Start Call</span>
+              </button>
+              <button id="btnEndCall" class="btn-end-call hidden" title="End / Reset Call">
+                <span>✕</span> End Call
+              </button>
             </div>
-            <div id="callStatusDesc" class="line-status-desc">
-              Ready to screen incoming caller.
+
+            <div class="line-status-display">
+              <div class="line-status-top">
+                <span class="meta-label">Line Status</span>
+                <span id="callStageBadge" class="badge-pill pill-neutral">STANDBY</span>
+              </div>
+              <div id="callStatusDesc" class="line-status-desc">
+                Ready to screen incoming caller.
+              </div>
             </div>
-          </div>
 
-          <!-- Dynamic Caller Identity Pill Box -->
-          <div class="caller-ident-box">
-            <div class="caller-ident-top">
-              <span class="meta-label">Caller Recognition</span>
-              <span id="pillCallerEnrolled" class="badge-pill pill-neutral">Standby</span>
-            </div>
-            <div class="caller-ident-name">
-              <span class="caller-avatar">👤</span>
-              <span id="textCallerIdentity" class="caller-name-text">Awaiting caller...</span>
-            </div>
-            <div id="textCallerRoleHint" class="caller-hint-text">
-              Identity unverified
-            </div>
-          </div>
-        </div>
-
-        <!-- External Caller Input Box -->
-        <div class="caller-input-station">
-          <div class="caller-input-header">
-            <span class="input-station-title">Caller Audio Input</span>
-            <span class="input-station-sub" id="callerShieldHint">Line shielded</span>
-          </div>
-
-          <div class="caller-input-row">
-            <!-- Audio Record Button -->
-            <button id="btnToggleMonitor" class="btn-record-voice">
-              <span class="mic-circle">🎙️</span>
-              <span id="btnMonitorText">Record Voice</span>
-            </button>
-
-            <!-- Waveform visualizer -->
-            <div class="waveform-box">
-              <canvas id="waveformCanvas" width="460" height="36"></canvas>
-              <span class="sound-label" id="soundStatusText">Microphone off</span>
-            </div>
-          </div>
-
-          <!-- Quick Text Input -->
-          <div class="quick-text-row">
-            <input type="text" id="manualUtteranceInput" class="clean-input font-mono" placeholder="Speak via mic or type message..." />
-            <button id="btnSendManualUtterance" class="btn-send-speech">Send</button>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- 4 Structured Multi-Level Protection Cards -->
-      <section class="cards-grid-four">
-        
-        <!-- Card 1: Level 1 Synthetic Voice -->
-        <div class="sharp-card" id="cardVoice">
-          <div class="card-head">
-            <span class="card-title-text">1. Synthetic Voice</span>
-            <span class="badge-pill pill-neutral" id="pillVoice">Standby</span>
-          </div>
-          <div class="card-metric">
-            <span class="metric-big font-mono" id="textVoiceTitle">AI: --</span>
-            <span class="cutoff-tag font-mono" id="textVoiceThreshold">&gt;0.58</span>
-          </div>
-          <div class="card-sub" id="textVoiceSub">Neural deepfake scan</div>
-        </div>
-
-        <!-- Card 2: Level 2 Biometric Match -->
-        <div class="sharp-card" id="cardSpeaker">
-          <div class="card-head">
-            <span class="card-title-text">2. Biometric Match</span>
-            <span class="badge-pill pill-neutral" id="pillSpeaker">Standby</span>
-          </div>
-          <div class="card-metric">
-            <span class="metric-big font-mono" id="textSpeakerTitle">Match: --</span>
-            <span class="cutoff-tag font-mono" id="textSpeakerThreshold">&gt;0.45</span>
-          </div>
-          <div class="card-sub" id="textSpeakerSub">Voiceprint verification</div>
-        </div>
-
-        <!-- Card 3: Level 3 Dynamic Challenge -->
-        <div class="sharp-card" id="cardFollowUp">
-          <div class="card-head">
-            <span class="card-title-text">3. Dynamic Challenge</span>
-            <span class="badge-pill pill-neutral" id="pillFollowUp">Ready</span>
-          </div>
-          <div class="card-metric">
-            <span class="metric-big" id="textFollowUpTitle">Screening Active</span>
-          </div>
-          <div class="card-sub" id="textFollowUpSub">Standby</div>
-        </div>
-
-        <!-- Card 4: Level 4 Coercion & Dynamically Predicted Threat Pattern -->
-        <div class="sharp-card" id="cardRequest">
-          <div class="card-head">
-            <span class="card-title-text">4. Threat Pattern</span>
-            <span class="badge-pill pill-neutral" id="pillRequest">Standby</span>
-          </div>
-          <div class="card-metric">
-            <span class="metric-big" id="textRequestTitle">Pattern: --</span>
-          </div>
-          <div class="card-sub" id="textRequestSub">Intent analysis</div>
-        </div>
-
-      </section>
-
-      <!-- Main Content: Clean 2-Column Split -->
-      <main class="content-split-grid">
-        
-        <!-- Left Column: Live Call Interception Transcript -->
-        <section class="sharp-content-card">
-          <div class="card-bar-clean">
-            <div>
-              <h2 class="section-title">Call Transcript</h2>
-              <div class="section-caption">Real-time screening dialogue</div>
-            </div>
-            <button id="btnClearTranscript" class="btn-clean-small">Clear</button>
-          </div>
-
-          <!-- Conversation Stream -->
-          <div class="transcript-box" id="transcriptContainer">
-            <div class="empty-state-hint" id="transcriptPlaceholder">
-              <p>Click <strong>Start Call</strong> to begin screening.</p>
-            </div>
-            <div class="chat-feed hidden" id="transcriptFeed"></div>
-          </div>
-        </section>
-
-        <!-- Right Column: Composite Threat Assessment & Score -->
-        <section class="sharp-content-card">
-          <div class="card-bar-clean">
-            <div>
-              <h2 class="section-title">Threat Assessment</h2>
-              <div class="section-caption">Multi-factor security fusion</div>
-            </div>
-            <span class="badge-pill pill-safe" id="copilotVerdictBadge">Standby</span>
-          </div>
-
-          <!-- Composite Score Gauge Box -->
-          <div class="gauge-card-sharp">
-            <div class="gauge-top-row">
-              <span class="gauge-label">Composite Risk:</span>
-              <span class="gauge-score font-mono" id="compositeScoreValue">0%</span>
-            </div>
-            <div class="meter-track-sharp">
-              <div id="compositeMeterFill" class="meter-fill-sharp" style="width: 5%;"></div>
-            </div>
-            <div class="gauge-breakdown-row font-mono">
-              <span class="breakdown-tag" id="tagSyntheticRisk">Synthetic: 0/35</span>
-              <span class="breakdown-tag" id="tagBiometricRisk">Impersonation: 0/35</span>
-              <span class="breakdown-tag" id="tagCoercionRisk">Coercion: 0/35</span>
-            </div>
-          </div>
-
-          <!-- Screening Interception Action & Line Status Panel -->
-          <div id="compositeActionBox" class="composite-action-panel status-idle">
-            <div class="action-panel-top">
-              <span class="action-panel-tag font-mono">AGENT ACTION</span>
-              <span id="compositeActionBadge" class="badge-pill pill-neutral">STANDBY</span>
-            </div>
-            <div id="compositeActionDesc" class="action-panel-desc">
-              VoiceShield active. Line shielded until verified.
-            </div>
-            <div id="compositeCounterQuoteBox" class="counter-quote-mini hidden">
-              <div class="counter-quote-label font-mono">CHALLENGE QUESTION:</div>
-              <div id="activeCounterQuestionText" class="counter-quote-text">"Hello, may I ask who is calling?"</div>
-            </div>
-          </div>
-
-          <!-- Recipient Protection Guidance & Action Advisory -->
-          <div id="compositeGuidanceBox" class="composite-guidance-panel hidden">
-            <div class="guidance-panel-top">
-              <span class="guidance-panel-tag">PROTECTION ADVISORY</span>
-              <span id="guidanceRiskPill" class="badge-pill pill-danger">HIGH RISK</span>
-            </div>
-            <div class="guidance-section-block">
-              <div class="guidance-block-label">Situation:</div>
-              <div id="seriousThreatSituation" class="guidance-situation-text">Threat intercepted on line.</div>
-            </div>
-            <div class="guidance-section-block">
-              <div class="guidance-block-label">Instructions:</div>
-              <div id="seriousThreatInstructions" class="guidance-instructions-text">
-                1. Do not transfer funds or share OTP.<br>
-                2. Authorities never conduct arrests over phone/video calls.<br>
-                3. Call 1930 (Cyber Helpline) if harassment continues.
+            <!-- Dynamic Caller Identity Pill Box -->
+            <div class="caller-ident-box">
+              <div class="caller-ident-top">
+                <span class="meta-label">Caller Recognition</span>
+                <span id="pillCallerEnrolled" class="badge-pill pill-neutral">Standby</span>
+              </div>
+              <div class="caller-ident-name">
+                <span class="caller-avatar">👤</span>
+                <span id="textCallerIdentity" class="caller-name-text">Awaiting caller...</span>
+              </div>
+              <div id="textCallerRoleHint" class="caller-hint-text">
+                Identity unverified
               </div>
             </div>
           </div>
 
-          <!-- Threat Explanation & Safety Breakdown -->
-          <div class="copilot-advice-container" id="adviceContainer">
-            <div class="advice-section-title">Telemetry & Rationale:</div>
-            <div class="advice-top-explanation" id="adviceExplanation">
-              Line idle.
+          <!-- External Caller Input Sub-row -->
+          <div class="caller-input-station">
+            <div class="caller-input-header">
+              <span class="input-station-title">Caller Audio Input</span>
+              <span class="input-station-sub" id="callerShieldHint">Line shielded</span>
+            </div>
+
+            <div class="caller-input-row">
+              <!-- Audio Record Button -->
+              <button id="btnToggleMonitor" class="btn-record-voice">
+                <span class="mic-circle">🎙️</span>
+                <span id="btnMonitorText">Record Voice</span>
+              </button>
+
+              <!-- Waveform visualizer -->
+              <div class="waveform-box">
+                <canvas id="waveformCanvas" width="460" height="36"></canvas>
+                <span class="sound-label" id="soundStatusText">Microphone off</span>
+              </div>
+            </div>
+
+            <!-- Quick Text Input -->
+            <div class="quick-text-row">
+              <input type="text" id="manualUtteranceInput" class="clean-input font-mono" placeholder="Speak via mic or type message..." />
+              <button id="btnSendManualUtterance" class="btn-send-speech">Send</button>
             </div>
           </div>
         </section>
 
-      </main>
+        <!-- Division 2: 4 Multi-Level Protection Metrics -->
+        <section class="console-division division-metrics">
+          <div class="cards-grid-four">
+            
+            <!-- Card 1: Level 1 Synthetic Voice -->
+            <div class="sharp-card" id="cardVoice">
+              <div class="card-head">
+                <span class="card-title-text">1. Synthetic Voice</span>
+                <span class="badge-pill pill-neutral" id="pillVoice">Standby</span>
+              </div>
+              <div class="card-metric">
+                <span class="metric-big font-mono" id="textVoiceTitle">AI: --</span>
+                <span class="cutoff-tag font-mono" id="textVoiceThreshold">&gt;0.58</span>
+              </div>
+              <div class="card-sub" id="textVoiceSub">Neural deepfake scan</div>
+            </div>
+
+            <!-- Card 2: Level 2 Biometric Match -->
+            <div class="sharp-card" id="cardSpeaker">
+              <div class="card-head">
+                <span class="card-title-text">2. Biometric Match</span>
+                <span class="badge-pill pill-neutral" id="pillSpeaker">Standby</span>
+              </div>
+              <div class="card-metric">
+                <span class="metric-big font-mono" id="textSpeakerTitle">Match: --</span>
+                <span class="cutoff-tag font-mono" id="textSpeakerThreshold">&gt;0.45</span>
+              </div>
+              <div class="card-sub" id="textSpeakerSub">Voiceprint verification</div>
+            </div>
+
+            <!-- Card 3: Level 3 Dynamic Challenge -->
+            <div class="sharp-card" id="cardFollowUp">
+              <div class="card-head">
+                <span class="card-title-text">3. Dynamic Challenge</span>
+                <span class="badge-pill pill-neutral" id="pillFollowUp">Ready</span>
+              </div>
+              <div class="card-metric">
+                <span class="metric-big" id="textFollowUpTitle">Screening Active</span>
+              </div>
+              <div class="card-sub" id="textFollowUpSub">Standby</div>
+            </div>
+
+            <!-- Card 4: Level 4 Coercion & Threat Pattern -->
+            <div class="sharp-card" id="cardRequest">
+              <div class="card-head">
+                <span class="card-title-text">4. Threat Pattern</span>
+                <span class="badge-pill pill-neutral" id="pillRequest">Standby</span>
+              </div>
+              <div class="card-metric">
+                <span class="metric-big" id="textRequestTitle">Pattern: --</span>
+              </div>
+              <div class="card-sub" id="textRequestSub">Intent analysis</div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Division 3: Split Grid for Transcript & Threat Assessment -->
+        <section class="console-division division-split">
+          <div class="content-split-grid">
+            
+            <!-- Left Column: Live Call Interception Transcript -->
+            <div class="split-col-panel">
+              <div class="card-bar-clean">
+                <div>
+                  <h2 class="section-title">Call Transcript</h2>
+                  <div class="section-caption">Real-time screening dialogue</div>
+                </div>
+                <button id="btnClearTranscript" class="btn-clean-small">Clear</button>
+              </div>
+
+              <!-- Conversation Stream -->
+              <div class="transcript-box" id="transcriptContainer">
+                <div class="empty-state-hint" id="transcriptPlaceholder">
+                  <p>Click <strong>Start Call</strong> to begin screening.</p>
+                </div>
+                <div class="chat-feed hidden" id="transcriptFeed"></div>
+              </div>
+            </div>
+
+            <!-- Right Column: Composite Threat Assessment & Score -->
+            <div class="split-col-panel">
+              <div class="card-bar-clean">
+                <div>
+                  <h2 class="section-title">Threat Assessment</h2>
+                  <div class="section-caption">Multi-factor security fusion</div>
+                </div>
+                <span class="badge-pill pill-safe" id="copilotVerdictBadge">Standby</span>
+              </div>
+
+              <!-- Composite Score Gauge Box -->
+              <div class="gauge-card-sharp">
+                <div class="gauge-top-row">
+                  <span class="gauge-label">Composite Risk:</span>
+                  <span class="gauge-score font-mono" id="compositeScoreValue">0%</span>
+                </div>
+                <div class="meter-track-sharp">
+                  <div id="compositeMeterFill" class="meter-fill-sharp" style="width: 5%;"></div>
+                </div>
+                <div class="gauge-breakdown-row font-mono">
+                  <span class="breakdown-tag" id="tagSyntheticRisk">Synthetic: 0/35</span>
+                  <span class="breakdown-tag" id="tagBiometricRisk">Impersonation: 0/35</span>
+                  <span class="breakdown-tag" id="tagCoercionRisk">Coercion: 0/35</span>
+                </div>
+              </div>
+
+              <!-- Screening Interception Action & Line Status Panel -->
+              <div id="compositeActionBox" class="composite-action-panel status-idle">
+                <div class="action-panel-top">
+                  <span class="action-panel-tag font-mono">AGENT ACTION</span>
+                  <span id="compositeActionBadge" class="badge-pill pill-neutral">STANDBY</span>
+                </div>
+                <div id="compositeActionDesc" class="action-panel-desc">
+                  VoiceShield active. Line shielded until verified.
+                </div>
+                <div id="compositeCounterQuoteBox" class="counter-quote-mini hidden">
+                  <div class="counter-quote-label font-mono">CHALLENGE QUESTION:</div>
+                  <div id="activeCounterQuestionText" class="counter-quote-text">"Hello, may I ask who is calling?"</div>
+                </div>
+              </div>
+
+              <!-- Recipient Protection Guidance & Action Advisory -->
+              <div id="compositeGuidanceBox" class="composite-guidance-panel hidden">
+                <div class="guidance-panel-top">
+                  <span class="guidance-panel-tag">PROTECTION ADVISORY</span>
+                  <span id="guidanceRiskPill" class="badge-pill pill-danger">HIGH RISK</span>
+                </div>
+                <div class="guidance-section-block">
+                  <div class="guidance-block-label">Situation:</div>
+                  <div id="seriousThreatSituation" class="guidance-situation-text">Threat intercepted on line.</div>
+                </div>
+                <div class="guidance-section-block">
+                  <div class="guidance-block-label">Instructions:</div>
+                  <div id="seriousThreatInstructions" class="guidance-instructions-text">
+                    1. Do not transfer funds or share OTP.<br>
+                    2. Authorities never conduct arrests over phone/video calls.<br>
+                    3. Call 1930 (Cyber Helpline) if harassment continues.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Threat Explanation & Safety Breakdown -->
+              <div class="copilot-advice-container" id="adviceContainer">
+                <div class="advice-section-title">Telemetry & Rationale:</div>
+                <div id="adviceExplanation" class="advice-top-explanation">
+                  Line idle.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
 
     </div>
 
